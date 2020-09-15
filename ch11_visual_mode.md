@@ -82,14 +82,14 @@ three
 ```
 one
 [two
-t]hree    <-- cursor
+t]hree    <-- 光标
 ```
 
 视觉高光跟随光标移动。如果要将其向上扩展到行"one"，则需要在光标位于字母"two"而不是"three"上时向上移动光标。现在，您的光标在"three"行上。要移动它，用`o`或`O`切换光标位置。
 
 ```
 one
-[two     <-- cursor
+[two     <-- 光标
 t]hree
 ```
 
