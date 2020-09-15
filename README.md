@@ -17,7 +17,7 @@
 - [Ch 8     - 寄存器](./ch08_registers.md)
 - [Ch 9     - 宏](./ch09_macros.md)
 - [Ch 10    - 撤消](./ch10_undo.md)
-- [Ch 11    - 视觉模式](./ch11_visual_mode.md)
+- [Ch 11    - 可视模式](./ch11_visual_mode.md)
 - [Ch 12    - 搜索和替换](./ch12_search_and_substitute.md)
 - [Ch 13    - 全局命令](./ch13_the_global_command.md)
 - [Ch 14    - 外部命令](./ch14_external_commands.md)
