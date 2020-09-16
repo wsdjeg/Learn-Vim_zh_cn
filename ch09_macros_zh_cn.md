@@ -197,22 +197,23 @@ d. plain donut
 0W~$bideep fried ^[A.^[
 ```
 
+为了在寄存器 “a” 中添加修改后的指令，你可以通过在一个已知寄存器添加一个新入口的方式来实现。在一行的行首，执行 `"ay$`。这将会告诉 Vim 你打算使用寄存器 “a” （`"a`） 来存储从当前位置到行末的文本（`y$`）。
 
-To add the amended instruction into register "a", you can do it the same way as adding a new entry into a named register. At the start of the line, run `"ay$`. This tells Vim that you're using the named register "a" (`"a`) to store the yanked text from the current position to the end of the line (`y$`).
 
-Now when you execute `@a`, your macro will toggle the case of the first word, add "deep fried " before "donut", and add a "." at the end of the line.
+现在，但你执行 `@a` 时，你的宏命令会自动改变第一个单词的大小写，在 “donut” 前面添加 “deep fried”，之后在行末添加 “.”。
 
-An alternative way to amend a macro is to use a command line expression. Do `:let @a="`, then do `Ctrl-r Ctrl-r a`, this will literally paste the content of register "a". Finally, don't forget to close the double quotes (`"`). If you need to insert special characters using internal codes while editing a command line expression, you can use `Ctrl-v`.
+另一个修改宏命令的方式是通过命令行解析。执行 `:let @a="`，之后执行 `Ctrl-r Ctrl-r a`，这会将寄存器 “a” 的命令逐字打印出来。最后，别忘记在闭合的引号（`"`）。如果你希望在编辑命令行表达式时插入内部码来使用特定的字符，你可以使用 `Ctrl-v`。
 
 # Macro Redundancy
 
-You can easily duplicate macros from one register to another. For example, to duplicate a macro in register "a" to register "z", you can do `:let @z = @a`. `@a` represents the content of register "a". Now if you run `@z`, it does the exact same actions as `@a`.
+你可以很轻松的将一个寄存器的内容拷贝到另一个寄存器。例如，你可以使用 `:let @z = @a` 将寄存器 “a” 中的命令拷贝到寄存器 “z”。 `@a` 表示寄存器 “a” 中存储的内容，你现在执行 `@z`，将会执行和 `@a` 一样的指令。
 
-I find creating a redundancy useful on my most frequently used macros. In my workflow, I usually record macros in the first seven alphabetical letters (a-g) and I often replace them without much thought. If I move the useful macros towards the end of the alphabets, I can preserve them without worrying that I might accidentally replace them.
+
+我发现对常用的宏命令创建冗余是很有用的。在我的工作流程中，我通常在前7个字母（a-g）上创建宏命令，并且我经常不加思索地把它们替换了。如果我将很有用的宏命令移动到了字母表的末尾，就不用担心我在无意间把他们替换了。
 
 # Series vs Parallel Macro
 
-Vim can execute macros in series and parallel. Suppose you have this text:
+Vim 可以连续和同时运行宏命令，假设你有如下的文本：
 
 ```
 import { FUNC1 } from "library1";
@@ -222,21 +223,21 @@ import { FUNC4 } from "library4";
 import { FUNC5 } from "library5";
 ```
 
-If you want to record a macro to lowercase all the uppercased "FUNC", this macro should work:
+假如你希望把所有的 “FUNC” 字符变为小写，那么宏命令为如下：
 
 ```
 qa0f{gui{jq
 ```
 
-Here is the breakdown:
-- `qa` starts recording in register "a".
-- `0` goes to first line.
-- `f{` finds the first instance of "{".
-- `gui{` lowercases (`gu`) the text inside the bracket text-object (`i{`).
-- `j` goes down one line.
-- `q` stops macro recording.
+分解如下：
+- `qa` 开始记录宏命令到 “a” 寄存器。
+- `0`移动到第一行。
+- `f{` 查找第一个 “{” 字符。
+- `gui{` 把括号内的文本（`i{`）变为小写（`gu`）。
+- `j` 移动到下一行。
+- `q` 停止记录宏命令。
 
-Now you can run `99@a` to execute it on the remaining lines. However, what if you have this import expression inside your file?
+现在，执行 `99@a` 在剩余的行修改。然而，假如在你的文本里有如下 import 语句会怎么样呢？
 
 ```
 import { FUNC1 } from "library1";
@@ -247,16 +248,16 @@ import { FUNC4 } from "library4";
 import { FUNC5 } from "library5";
 ```
 
-Running `99@a`, only executes the macro three times. It does not execute the macro on last two lines because the execution fails to run `f{` on the "foo" line. This is expected when running the macro in series. You can always go to the next line where "FUNC4" is and replay that macro again. But what if you want to get everything done in one go? You can run the macro in parallel.
+执行 `99@a`，会只在前三行执行。而最后两行不会被执行，因为在执行第四行（包含“foo”）时会遇到错误而停止。然而这种情况你希望继续向下执行。你可以移动到包含（“FUNC4”）的一行，并重新调用该命令。但是假如你希望仅调用一次命令就完成所有操作呢？你可以并行地执行宏命令。
 
-Recall from earlier section that macros can be executed using the  command line command `:normal` (ex: `:3,5 normal @a` to execute macro "a" on lines 3-5). If you run `:1,$ normal @a`, you will see that the macro is being executed on all lines except the "foo" line. It works!
+如本章前面所说，可以使用 `:normal` 去执行宏命令，（例如： `:3,5 normal @a` 会在 3-5行执行 a 寄存器中的宏命令）。如果执行 `:1,$ normal @a`，会在所有除了包含有 “foo” 的行执行，而且它不会出错。
 
-Although internally Vim does not actually run the macros in parallel, outwardly, it behaves like such. Vim executes `@a` *independently* on each line from the first line to the last line (`1,$`). Since Vim executes these macros independently, each line does not know that one of the macro executions had failed on the "foo" line.
+尽管本质上来说，Vim 并不是在并行地执行宏命令，但表面上看，它是并行运行的。 Vim 会独立地在从第一行开始（`1,$`）每一行执行 `@a` 。由于 Vim 独立地在每一行执行命令，每一行都不会知道有一行（包含“foo”）会遇到执行错误。
 
 # Learn Macros the Smart Way
 
-Many things you do in editing are repetitive. To get better at editing, get into the habit of detecting repetitive actions. Use macros (or dot command) so you don't have to perform the same action twice. Almost everything that you can do in Vim can be done with macros.
+你在编辑器里做的很多事都是重复的。为了更好地编辑文件，请乐于发现这些重复性的行为。执行宏命令或者点命令，而不是做相同的动作两次。几乎所有你在 Vim 所作的事情都可以变为宏命令。
 
-In the beginning, I find it very awkward to write macros, but don't give up. With enough practice, you will get into the habit of automating everything.
+刚开始的时候，我发现宏命令时很棘手的，但是请不要放弃。有了足够的练习，你可以找到这种文本自动编辑的快乐。
 
-You might find it helpful to use mnemonics to help remember your macros. If you have a macro that creates a function, use the "f" register (`qf`). If you have a macro for numerical operations, the "n" register may be a good fit (`qn`). Name it with the *first named register* that comes to your mind when you think of that operation. I also find that "q" register makes a good default macro register because `qq` does not require much brain power to use. Lastly, I like to increment my macros in alphabetical orders, like `qa`, then `qb`, then `qc`, and so on. Find a method that works best for you.
+使用某种助记符去帮助你记住宏命令是很有帮助的。如果你有一个创建函数（function）的宏命令，你可以使用 “f” 寄存器去录制它。如果你有一个宏命令去操作数字，那么使用寄存器 “n” 去记住它是很好的。用你想执行的操作时想起的第一个字符给你的宏命令命名。另外，我发现 “q” 是一个很好的宏命令的寄存器，因为执行 “qq” 去调用宏命令是很快速而简单的。最后，我喜欢按照字母表的顺序去添加我的宏命令，例如从 `qa` 到 `qb` 再到 `qc`。去寻找最适合你的方法吧。
