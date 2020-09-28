@@ -5,6 +5,18 @@
 
 在本章节，你将学习命令行模式下更多的技巧。
 
+<!-- vim-markdown-toc GFM -->
+
+  - [进入、离开命令行模式](#进入离开命令行模式)
+  - [重复上一次命令](#重复上一次命令)
+  - [命令行模式快捷键](#命令行模式快捷键)
+  - [寄存器与自动完成](#寄存器与自动完成)
+  - [历史窗口](#历史窗口)
+- [Command-line Window](#command-line-window)
+- [Learn Command-line Mode the Smart Way](#learn-command-line-mode-the-smart-way)
+
+<!-- vim-markdown-toc -->
+
 ## 进入、离开命令行模式
 
 命令行模式同输入模式、可视模式类似，也是一种 Vim 模式，在这种模式下，光标会到屏幕最下方，
@@ -22,23 +34,23 @@
 
 _Sometimes other literatures might refer the "Command-line command" as "Ex command" and the "External command" as "filter command" or "bang operator"._
 
-# Repeating the Previous Command
+## 重复上一次命令
 
-You can repeat the previous command-line command or external command with `@:`.
+你可以通过快捷键 `@:` 重复执行上一次命令。
 
-If you just ran `:s/foo/bar/g`, running `@:` repeats that substitution.
+如果之前执行的命令是 `:s/foo/bar/g`，按下 `@:` 将重复这一替换。
 
-If you just ran `:.!tr '[a-z]' '[A-Z]'`, running `@:` repeats the last external command translation filter.
+如果之前执行的命令是 `:.!tr '[a-z]' '[A-Z]'`，按下 `@:` 将重复这一拓展命令。
 
-# Command-line Mode Shortcuts
+## 命令行模式快捷键
 
-While in the command-line mode, you can move to the left or to the right, one character at a time, with the `Left` or `Right` arrow.
+当处在命令行模式下，你可以使用左右方向键移动光标，一次一个字符。
 
-If you need to move word-wise, use `Shift-Left` or `Shift-Right` (in some OS, you might have to use `Ctrl` instead of `Shift`).
+如果需要一次移动一个词的位置，使用 `Shift-Left` 和 `Shift-Right` (在某些系统下，你可能需要使用 `ctrl` 键，而非 `Shift` 键).
 
-To go to the start of the line, use `Ctrl-B`. To go to the end of the line, use `Ctrl-E`.
+使用 `Ctrl-b` 快捷键移动光标至行首，`Ctrl-e` 快捷键移动光标至行尾。
 
-Similar to the insert mode, inside the command-line mode, you have three ways to delete characters:
+类似于插入模式，在命令行模式下，有三个快捷键可以删除字符：
 
 ```
 Ctrl-H    Delete one character
@@ -46,17 +58,27 @@ Ctrl-W    Delete one word
 Ctrl-U    Delete the entire line
 ```
 
-# Register and Autocomplete
+## 寄存器与自动完成
 
-When programming, whenever possible, do not repeat if you can autocomplete it. This mindset will not only save you time but reduces the chances of typing the wrong characters.
+在编程过程中，无论何时，如果可以自动完成，就不需要重复操作。这一原则将不仅会为你节省很多时间，并且可以避免输入出错。
 
-You can insert texts from Vim register with `Ctrl-R` (the same way as the insert mode). If you have the string "foo" saved in the register "a" (`"a`), you can insert it by running `Ctrl-R a`. Everything that you can get from the register in the insert mode, you can do the same from the command-line mode.
+可以从 Vim 的寄存器中输入字符（同插入模式一样）。如果寄存器 "a"（`"a`）中的内容是 "foo"，那么就可以通过快捷键 `Ctrl-r a` 输入。
+任何可以在输入模式下获取到的寄存器内容，在命令行模式下同样可以获取到。
 
-You can also autocomplete commands. To autocomplete the `echo` command, while in the command-line mode, type "ec", then press `<Tab>`. You should see on the bottom left Vim commands starting with "ec" (example: `echo echoerr echohl echomsg econ`). To go to the next option, press either `<Tab>` or `Ctrl-N`. To go the previous option, press either `<Shift-Tab>` or `Ctrl-P`.
+你也可以自动补全命令。比如，如果需要补全 `echo` 命令，在命令行模式下，按下 `ec`，然后按下 `<Tab>` 键，就可以补全了。
+你可以在状态栏上看到其他的以 `ec` 开头的命令，比如（`echo echoerr echohl echomsg econ`）。
+可以使用 `<Tab>` 或者 `Ctrl-n` 选择下一个补全命令。
+也可以使用 `<Shift-Tab>` 或者 `Ctrl-p` 选择上一个补全命令。
 
-Some command-line commands accept file names as arguments. One example is `edit`. After typing the command, `:e` (don't forget the space), press `<Tab>`. Vim will list all the relevant file names.
+一些命令支持接受文件名作为其参数。
+其中一个例子就是 `edit` 命令。
+按下这一命令后，`:e`（不要忘记按下空格键），继续按下 `<Tab>` 键，Vim 将列出所有相对路径下的文件。
 
-# History Window
+## 历史窗口
+
+你可以使用窗口打开并查看历史执行的命令，和搜索内容（确保你的 Vim 支持 `+cmdline_hist` 特性，可以使用 `vim --version` 查看当前 Vim 支持的特性）。
+
+可以通过命令 `:his :` 打开命令历史窗口：
 
 You can view the histoy of command-line commands and search terms (make sure that your Vim build has `+cmdline_hist` when you run `vim --version`).
 
