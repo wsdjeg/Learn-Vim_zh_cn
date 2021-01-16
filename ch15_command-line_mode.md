@@ -1,64 +1,68 @@
-# Ch15. Command-line Mode
+# 第15章 命令行模式
 
-In the last three chapters, you learned how to use the search commands (`/`, `?`), substitute command (`:s`), global command (`:g`), and external command (`!`). These are examples of command-line mode commands.
+在前三章中，您已经学习了如何使用搜索命令(`/`, `?`)、替换命令(`:s`)、全局命令(`:g`)，以及外部命令(`!`)。这些都是命令行模式命令的一些例子。
 
-In this chapter, you will learn various tips and tricks for the command-line mode.
+在本章中，您将学习命令行模式的更多技巧。
 
-## Entering And Exiting The Command-Line Mode
-The command-line mode is a mode in itself, just like normal mode, insert mode, and visual mode. When you are in this mode, the cursor goes to the bottom of the screen where you can type in different commands.
+## 进入和退出命令行模式
 
-There are 4 different commands you can use to enter the command-line mode:
-- Search patterns (`/`, `?`)
-- Command-line commands (`:`)
-- External commands (`!`)
+命令行模式本身也是一种模式，就像普通模式、输入模式、可视模式一样。在这种模式中，光标将转到屏幕底部，此时您可以输入不同的命令。
 
-You can enter the command-line mode from the normal mode or the visual mode.
+有 4 种进入命令行模式的方式：
 
-To leave the command-line mode, you can use `<esc>`, `Ctrl-c, or Ctrl-[`.
+- 搜索命令 (`/`, `?`)
+- 命令行指令 (`:`)
+- 外部命令 (`!`)
 
-*Sometimes other literatures might refer the "Command-line command" as "Ex command" and the "External command" as "filter command" or "bang operator".*
+您可以从正常模式或可视模式进入命令行模式。
 
-## Repeating The Previous Command
-You can repeat the previous command-line command or external command with `@:`.
+若要离开命令行模式，您可以使用 `<esc>`、`Ctrl-c`、`Ctrl-[`。
 
-If you just ran `:s/foo/bar/g`, running `@:` repeats that substitution.
+*有时其他资料可能会将“命令行指令”称为“Ex 命令”，将“外部命令”称为“过滤命令”或者“叹号运算符”。*
 
-If you just ran `:.!tr '[a-z]' '[A-Z]'`, running `@:` repeats the last external command translation filter.
+## 重复上一个命令
 
-## Command-Line Mode Shortcuts
+您可以用 `@:` 来重复上一个命令行指令或外部命令。
 
-While in the command-line mode, you can move to the left or to the right, one character at a time, with the `Left` or `Right` arrow.
+如果您刚运行 `:s/foo/bar/g`，执行 `@:` 将重复该替换。
 
-If you need to move word-wise, use `Shift-Left` or `Shift-Right` (in some OS, you might have to use `Ctrl` instead of `Shift`).
+如果您刚运行 `:.!tr '[a-z]' '[A-Z]'`，执行 `@:` 将重复上一次外部命令转换过滤。
 
-To go to the start of the line, use `Ctrl-b`. To go to the end of the line, use `Ctrl-e`.
+## 命令行模式快捷键
 
-Similar to the insert mode, inside the command-line mode, you have three ways to delete characters:
+在命令行模式中，您可以使用 `Left` 或 `Right` 键，来左右移动一个字符。
+
+如果需要移动一个单词，使用 `Shift-Left` 或 `Shift-Right` (在某些操作系统中，您需要使用 `Ctrl` 而不是 `Shift`)。
+
+使用 `Ctrl-b`移动到该行的开始，使用 `Ctrl-e`移动到该行的结束。
+
+和输入模式类似，在命令行模式中，有三种方法可以删除字符：
 
 ```
-Ctrl-h    Delete one character
-Ctrl-w    Delete one word
-Ctrl-u    Delete the entire line
+Ctrl-h    删除一个字符
+Ctrl-w    删除一个单词
+Ctrl-u    删除一整行
 ```
-Finally, if you want to edit the command like you would a normal textfile use `Ctrl-f`.
 
-This also allows you to search through the previous commands, edit them and rerun them by pressing `Enter` in "command-line editing normal mode".
+最后，如果您想像编辑文本文件一样来编辑命令，可以使用 `Ctrl-f`。
 
-## Register And Autocomplete
+这样还可以查看过往的命令，并在这种“命令行编辑的普通模式”中编辑它们，同时还能按下 `Enter` 来运行它们。
 
-When programming, whenever possible, do not repeat if you can autocomplete it. This mindset will not only save you time but reduces the chances of typing the wrong characters.
+## 寄存器和自动补全
 
-You can insert texts from Vim register with `Ctrl-r` (the same way as the insert mode). If you have the string "foo" saved in the register "a, you can insert it by running `Ctrl-r a`. Everything that you can get from the register in the insert mode, you can do the same from the command-line mode.
+在编程中，只要能使用自动补全，就尽量不要重复输入。这种思想不仅能节省时间，还能减少打错字的可能。
 
-You can also autocomplete commands. To autocomplete the `echo` command, while in the command-line mode, type "ec", then press `<Tab>`. You should see on the bottom left Vim commands starting with "ec" (example: `echo echoerr echohl echomsg econ`). To go to the next option, press either `<Tab>` or `Ctrl-n`. To go the previous option, press either `<Shift-Tab>` or `Ctrl-p`.
+您可以使用 `Ctrl-r` 来插入 Vim 寄存器中的文本（就和输入模式中的一样）。如果寄存器 "a 中存储着 "foo" 字符串，运行 `Ctrl-r a` 就可以插入它。输入模式中的寄存器能做到的一切，同样能在命令行模式中做到。
 
-Some command-line commands accept file names as arguments. One example is `edit`. After typing the command, `:e ` (don't forget the space), press `<Tab>`. Vim will list all the relevant file names.
+命令也能使用自动补全。例如，要在命令行模式中自动补全 `echo` 命令，首先输入 "ec"，接着按下 `<Tab>`，此时您应该能在左下角看到一些 "ec" 开头的 Vim 命令（例如：`echo echoerr echohl echomsg econ`）。按下 `<Tab>` 或 `Ctrl-n` 可以去到下一个选项。按下 `<Shift-Tab>` 或 `Ctrl-p` 可以回到上一个选项。
 
-## History Window
+一些命令行指令接受文件名作为参数。`edit` 就是一个例子。输入 `:e ` 后（不要忘记空格了），按下 `<Tab>`，Vim 将列出所有相关的文件名。
 
-You can view the histoy of command-line commands and search terms (make sure that your Vim build has `+cmdline_hist` when you run `vim --version`).
+## 历史记录窗口
 
-To open the command-line history, run `:his :`:
+您可以查看命令行指令和搜索项的历史记录（要确保在运行 `vim --version` 时，Vim 的编译选项中含有`+cmdline_hist`）。
+
+运行 `:his :` 来查看命令行指令的历史记录：
 
 ```
 ##  cmd History
@@ -67,37 +71,38 @@ To open the command-line history, run `:his :`:
 4  s/foo/bar/g
 ```
 
-Vim lists the history of all the `:` commands you run. By default, Vim stores the last 50 commands. To change the amount of the entries that Vim remembers to 100, you can run `:set history=100`.
+Vim 列出了您运行的所有 `:` 命令。默认情况下，Vim 存储最后 50 个命令。运行 `:set history=100` 可以将 Vim 记住的条目总数更改为 100。
 
-When you are in the command-line mode, you can traverse this history list by pressing `Up` and `Down` button. Suppose you had the command-line command history that looks like:
+在命令行模式中，您可以按下 `Up` 和 `Down` 键来遍历此历史记录列表。假设您的命令行指令历史记录如下：
+
 ```
 51  s/foo/bar/g
 52  s/foo/baz/g
 53  s/foo//g
 ```
 
-If you press `:` then press `Up` once, you'll see `:s/foo//g`. Press `Up` one more time to see `:s/foo/baz/g`. Vim goes up the history list.
+按 `:` 后再按 `Up`，您可以看到 `:s/foo//g`。再按 `Up` 可以看到 `:s/foo/baz/g`。Vim 向上遍历了历史记录。
 
-Similarly, to view the search history, run `:his /`. You can also traverse the history stack by pressing `Up` or `Down` after running the history command `/`.
+类似地，运行 `:his /` 可以查看搜索记录。运行后，按下`Up` 或 `Down`可以遍历此历史记录栈。
 
-Vim is smart enough to distinguish different histories. If you press `Up` or `Down` after pressing `:`, Vim automatically the command history. If you press `Up` or `Down` after pressing `/`, Vim automatically searches the search history.
+Vim 非常聪明，可以区分不同的历史记录。按下`:`后再按`Up` 或 `Down`，Vim 自动显示命令历史记录。按下`/`后再按`Up` 或 `Down`，Vim 自动显示搜索记录。
 
-## Command-Line Window
+## 命令行窗口
 
-The history window displays the list of previously used command-line commands, but you can't execute the command from the history window. To execute a command while browsing, use the *command-line window*. There are three different command-line windows:
+历史记录窗口只能显示过往命令行指令，但无法运行它们。但在命令行窗口中，可以边浏览边执行。有三种命令行窗口：
 
 ```
-q:    Command-line window
-q/    Forward search window
-q?    Backward search window
+q:    命令行窗口
+q/    向前搜索窗口
+q?    向后搜索窗口
 ```
 
-Run `q:` to launch the command-line window for command-line commands. Vim will launch a new window at the bottom of the screen. You can traverse upward with the `Up` or `Ctrl-p` keys and traverse downward with the `Down` or `Ctrl-n` keys. If you press `<Return>`, Vim executes that command. To quit the command-line window, either press `Ctrl-c`, `Ctrl-w c`, or type `:quit`.
+运行 `q:` 来打开命令行窗口。Vim 将在屏幕底部启动一个新窗口。 您可以使用 `Up` 或`Ctrl-p` 键向上遍历，使用 `Down` 或 `Ctrl-n` 键可以向下遍历。按下 `<Return>`，Vim 将执行该命令。按下 `Ctrl-c`、`Ctrl-w c`、`:quit` 可以退出命令行窗口。
 
-Similarly, to launch the command-line window for search, run `q/` to search forward and `q?` to search backward.
+类似地，运行 `q/` 可以启动向前搜索命令行窗口，运行 `q?` 可以启动向后搜索命令行窗口。
 
-## Learn Command-Line Mode The Smart Way
+## 聪明地学习命令行模式
 
-Compared to the other three modes, the command-line mode is like the Swiss Army knife of text editing. You can edit text, modify files, and execute commands, just to name a few.  This chapter is a collection of odds and ends of the command-line mode. It also brings Vim modes into closure. Now that you know how to use the normal, insert, visual, and command-line mode you can edit text with Vim faster than ever.
+对比其他三种模式，命令行模式就像是文本编辑中的瑞士军刀。寥举几例，您可以编辑文本、修改文件和执行命令。本章是命令行模式的零碎知识的集合。同时，Vim 模式的介绍也走向尾声。现在，您已经知道如何使用普通、输入、可视以及命令行模式，您可以比以往更快地使用 Vim 来编辑文本了。
 
-It's time to move away from Vim modes and learn how to do a faster navigation with Vim tags.
+是时候离开 Vim 模式，来了解如何使用 Vim 标记进行更快的导航了。
