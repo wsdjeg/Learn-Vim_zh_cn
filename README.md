@@ -24,7 +24,7 @@ _学习 Vim（智能方式）_ 是一本优秀的学习 Vim 知识的书。
 - [Ch 13 - 全局命令](./ch13_the_global_command.md)
 - [Ch 14 - 外部命令](./ch14_external_commands.md)
 - [Ch 15 - 命令行模式](./ch15_command-line_mode.md)
-- Ch 16 - 标签
+- [Ch 16 - 标签](./ch16_tags.md)
 - Ch 17 - Git
 - Ch 18 - 折叠
 - Ch 19 - 编译
