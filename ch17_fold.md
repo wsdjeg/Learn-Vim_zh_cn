@@ -1,77 +1,79 @@
-# Ch17. Fold
+# 第17章 折叠
 
-When you read a file, often there are many irrelevant text that hinders you from understanding what that file does. To hide this unnecessary information, you can use Vim fold.
+在阅读文件时，经常会有一些不相关的文本会妨碍您理解。使用 Vim 折叠可以隐藏这些不必要的信息。
 
-In this chapter, you will learn how to use different folding methods.
+本章中，您将学习如何使用不同的折叠方法。
 
-## Manual Fold
+## 手动折叠
 
-Imagine that you are folding a sheet of paper to cover some text. The actual text does not go away, it is still there. Vim fold works the same way. It *folds* a range of text, hiding it from display without actually deleting it.
+想象您正在折叠一张纸来覆盖一些文本，实际的文本不会消失，它仍在那儿。Vim 折叠的工作方式与此相同，它*折叠*一段文本，在显示时会隐藏起来，但实际上并不会真的删除它。
 
-The fold operator is `z`. When you fold a paper, the fold looks like the letter "z" too.
+折叠操作符是`z`。折叠纸张时，它看起来也像字母 "z"。
 
-Suppose you have this text:
+假设有如下文本：
 
 ```
 Fold me
 Hold me
 ```
 
-Type `zfj`. Vim folds both lines into one. You should see something like this:
+输入 `zfj`。Vim 将这两行折叠成一行，同时会看到类似消息：
 
 ```
 +-- 2 lines: Fold me -----
 ```
 
-Here is the breakdown:
+上面的命令分解如下：
 
-- `zf` `zf` is the fold operator.
-- `j` is the motion for the fold operator.
+- `zf` 是折叠操作符。
+- `j` 是用于折叠操作符的动作。
 
-You can open a folded text with `zo`. To close the fold, use `zc`.
+您可以使用 `zo` 打开/展开已折叠文本，使用 `zc` 关闭/收缩文本。
 
-Vim fold follows the grammar rule. You can pass the fold operator with a motion or text object. To fold an outer paragraph, run `zfap`. To fold to the end of a file, run `zfG`. To fold the texts between `{` and `}`, run `zfa{`.
+Vim 折叠遵循语法规则。您可以在折叠运算符后，加上一个动作或文本对象。例如，使用 `zfap` 可以折叠外部段落；使用 `zfG` 可以折叠至文件末尾；使用 `zfa{` 可以折叠 `{` 和 `}` 之间的文本。
 
-You can fold from the visual mode. Highlight the area you want to fold (`v`, `V`, or `Ctrl-v`), then run `zf`.
+您可以在可视模式下进行折叠。高亮您想要折叠的区域后 (`v`, `V`, 或 `Ctrl-v`)，再输入 `zf` 即可。
 
-A Vim operator is not complete without the command-line mode version. You can execute a fold from the command-line mode with the `:fold` command. To fold the current line and the line after it, run:
+一个没有命令行模式版本的 Vim 操作符是不完整的。在命令行模式下，使用 `:fold` 命令可以执行一次折叠。若要折叠当前行及紧随其后的第二行，可以运行：
 
 ```
 :,+1fold
 ```
 
-`,+1` is the range. If you don't pass parameters to the range, it defaults to the current line. `+1` is the range indicator for the next line. To fold the lines 5 to 10, run `:5,10fold`. To fold from the current line to the end of the line, run `:,$fold`.
+`,+1` 是要折叠的范围。如果不传递范围参数，默认当前行。`+1` 是代表下一行的范围指示器。运行 `:5,10fold` 可以折叠第5至10行。运行 `:,$fold` 可以折叠当前行至文件末尾。
 
-There are many other fold and unfold commands. I find them too many to remember when starting out. The most useful ones are:
-- `zR` to open all folds.
-- `zM` to close all folds.
-- `za` toggle a fold.
+还有许多其他折叠和展开的命令。我发现他们实在太多，以至于在刚起步时很难记住。最有用的一些命令是：
 
-You can run `zR` and `zM` on any line, but `za` only works when you are on a folded / unfolded line. To learn more folding commands, check out `:h fold-commands`.
+- `zR` 展开所有折叠。
+- `zM` 收缩所有折叠。
+- `za` 切换折叠状态。
 
-## Different Fold Methods
+`zR` 和 `zM` 可用于任意行上，但 `za` 仅能用于已折叠/未折叠的行上。输入 `:h fold-commands` 可查阅更多有关折叠的指令。
 
-The section above covers Vim's manual fold. There are six different folding methods in Vim:
-1. Manual
-2. Indent
-3. Expression
-4. Syntax
-5. Diff
-6. Marker
+## 不同的折叠方法
 
-To see which folding method you are currently using, run `:set foldmethod?`. By default, Vim uses the `manual` method.
+以上部分涵盖了 Vim 手动折叠的内容。实际上，Vim 有六种不同的折叠方法：
 
-In the rest of the chapter, you will learn the other five folding methods. Let's get started with the indent fold.
+1. 手动折叠
+2. 缩进折叠
+3. 表达式折叠
+4. 语法折叠
+5. 差异折叠
+6. 标志折叠
 
-## Indent Fold
+运行 `:set foldmethod?` 可查看您当前正在使用哪一种折叠方式。默认情况下，Vim 使用手动方式。
 
-To use an indent fold, change the `'foldmethod'` to indent:
+在本章的剩余部分，您将学习其他五种折叠方法。让我们从缩进折叠开始。
+
+## 缩进折叠
+
+要使用缩进折叠，需要将 `'foldmethod'` 选项更改为缩进：
 
 ```
 :set foldmethod=indent
 ```
 
-Suppose that you have the text:
+假设有如下文本：
 
 ```
 One
@@ -79,22 +81,22 @@ One
   Two again
 ```
 
-If you run `:set foldmethod=indent`, you will see:
+运行 `:set foldmethod=indent` 后将看到：
 
 ```
 One
 +-- 2 lines: Two -----
 ```
 
-With indent fold, Vim looks at how many spaces each line has at the beginning and compares it with the `'shiftwidth'` option to determine its foldability. `'shiftwidth'` returns the number of spaces required for each step of the indent. If you run:
+使用缩进折叠后，Vim 将会查看每行的开头有多少空格，并将它与 `'shiftwidth'` 选项进行比较，以此来决定该行可折叠性。`'shiftwidth'` 返回每次缩进所需的空格数。如果运行：
 
 ```
 :set shiftwidth?
 ```
 
-Vim's default `'shiftwidth'` value is 2. On the text above, there are two spaces between the start of the line and the text "Two" and "Two again". When Vim sees the number of spaces *and* that the `'shiftwidth'` value is 2, Vim considers that line to have an indent fold level of one.
+Vim 的默认 `'shiftwidth'` 值为2。对于上面的文本而言，"Two" 和 "Two again" 的开头都有两个空格。当 Vim 看到了空格数*且*`'shiftwidth'`值为2时，Vim 认为该行的缩进折叠级别为1。
 
-Suppose this time you only one space between the start of the line and the text:
+假设这次文本开头只有一个空格：
 
 ```
 One
@@ -102,13 +104,13 @@ One
  Two again
 ```
 
-Right now if you run `:set foldmethod=indent`, Vim does not fold the indented line because there isn't sufficient space on each line. However, if you change the `'shiftwidth'` to 1:
+运行 `:set foldmethod=indent` 后，Vim 不再折叠已缩进的行了，因为这些行没有足够的空格。然而，当您改变 `'shiftwidth' ` 的值为1后：
 
 ```
 :set shiftwidth=1
 ```
 
-The text is now foldable. Restore the shiftwidth back to two and the spaces between the texts to two again. In addition, add:
+文本现在可以折叠了！现在，我们将 `'shiftwidth' ` 以及文本开头的空格数都重新恢复为2后，另外添加一些内容：
 
 ```
 One
@@ -118,14 +120,14 @@ One
     Three again
 ```
 
-Run fold (`zM`), you will see:
+运行折叠命令 (`zM`) 后可以看到：
 
 ```
 One
 +-- 4 lines: Two -----
 ```
 
-Unfold the folded lines (`zR`), then put your cursor on "Three" and toggle the text's folding state (`za`):
+展开已折叠的行 (`zR`)，接着移动光标至 "Three"，然后切换文本的折叠状态 (`za`)：
 
 ```
 One
@@ -134,19 +136,19 @@ One
 +-- 2 lines: Three -----
 ```
 
-What's this? A fold within a fold?
+这是啥？叠中叠？
 
-You can have nested folds. The text "Two" and "Two again" have fold level of one. The text "Three" and "Three again" have fold level of two. If you have a foldable text with a higher fold level within a foldable text, you can have multiple fold layers.
+是的，您可以嵌套折叠。文本 "Two" 和 "Two again" 的折叠级别都为1，文本 "Three" 和 "Three again" 的折叠级别都为2。如果在一段可折叠文本中，具有另一段折叠级别更高的可折叠文本，则可以具有多个折叠层。
 
-## Marker Fold
+## 标志折叠
 
-To use a marker fold, run:
+要使用标志折叠，请运行：
 
 ```
 :set foldmethod=marker
 ```
 
-Suppose you have the text:
+假设有如下文本：
 
 ```
 Hello
@@ -157,7 +159,7 @@ vim
 }}}
 ```
 
-Run `zM`, you will see:
+输入 `zM` 后会看到：
 
 ```
 hello
@@ -165,19 +167,19 @@ hello
 +-- 4 lines: -----
 ```
 
-Vim sees `{{{` and `}}}` as fold indicators and folds the texts between them. With the marker fold, Vim looks for special markers, defined by `'foldmarker'` option, to mark folding areas. To see what markers Vim uses, run:
+Vim 将 `{{{` 和 `}}}` 视为折叠指示器，并折叠其中的内容。使用标志折叠时，Vim 会寻找由 `'foldmarker'` 选项定义的特殊标志，并标记折叠区域。要查看 Vim 使用的标志，请运行：
 
 ```
 :set foldmarker?
 ```
 
-By default, Vim uses `{{{` and `}}}` as indicators. If you want to change the indicator to another texts, like "foo1" and "foo2":
+默认情况下，Vim 把 `{{{` 和 `}}}` 作为指示器。如果您想将指示器更改为其他诸如 "foo1" 或 "foo2" 的字符串，可以运行：
 
 ```
 :set foldmarker=foo1,foo2
 ```
 
-If you have the text:
+假设有如下文本：
 
 ```
 hello
@@ -188,17 +190,17 @@ vim
 foo2
 ```
 
-Now Vim uses `foo1` and `foo2` as the new folding markers. As a side note, an indicator must be a literal string and cannot be a regex.
+现在，Vim 将使用 `foo1` 和 `foo2` 作为新折叠标志。注意，指示器必须是文本字符串，不能是正则表达式。
 
-## Syntax Fold
+## 语法折叠
 
-Vim has a syntax system to customize the text syntax (highlight, weight, color, etc). This chapter won't discuss how the syntax system works, but you can use this to indicate which text to fold. To use a syntax fold, run:
+Vim 有一个能够自定义文本语法（高亮、字体粗细、颜色等）的语法系统。本章不会讨论语法系统的工作原理，但您可以使用它来指示要折叠的文本。要使用语法折叠，请运行：
 
 ```
 :set foldmethod=syntax
 ```
 
-Suppose you have this text and you want to fold everything between the square brackets:
+假设您有如下文本，并且想折叠方括号里的所有内容：
 
 ```
 [
@@ -208,36 +210,36 @@ Suppose you have this text and you want to fold everything between the square br
 ]
 ```
 
-You need to define the proper syntax definition to capture the characters between the square brackets:
+您需要设置正确的语法定义，来捕获方括号之间的字符：
 
 ```
 :syn region testFold start="\\[" end="\\]" transparent fold
 ```
 
-You should see:
+您应该能看到：
 
 ```
 +-- 5 lines: [ -----
 ```
 
-Here is the breakdown:
-- `:syn` is the syntax command.
-- `region` constructs a syntax region that can span several lines. For more info, check out `:h syntax.txt`
-- `start="\\[" end="\\]"` defines the starting and ending of a region. You have to escape (`\\`) the square-brackets because they are considered special characters.
-- `transparent` to prevent highlights.
-- `fold` increases the fold level when the syntax matches the starting and ending characters.
+上面的命令分解如下：
+- `:syn` 是语法命令。
+- `region` 构造一个可以跨越几行的语法区域。查阅 `:h syntax.txt` 可以获得更多信息。 
+- `start="\\[" end="\\]"` 定义区域的起始和结束。您需要转义 (`\\`) 方括号，因为它们是特殊字符。
+- `transparent` 防止高亮。
+- `fold` 当语法匹配到起始字符和结束字符时，增加折叠级别。
 
-## Expression Fold
+## 表达式折叠
 
-Expression folding allows you to define an expression to match for a fold. After you define the fold expressions, Vim scans each line for the value of `'foldexpr'`. This is the variable that you have to configure to return the appropriate value. If the `'foldexpr'` returns 0, then the line is not folded. If it returns 1, then that line has a fold level of 1. If it returns 2, then that line has a fold level of 2. There are more values other than integers, but I won't go over them. If you are curious, check out `:h fold-expr`.
+表达式折叠允许您定义要匹配折叠的表达式。定义折叠表达式后，Vim 会计算每行的 `'foldexpr'` 值。这是必须配置的变量，它要返回适当的值。如果返回 0，则不折叠行。如果它返回 1，则该行的折叠级别为 1。如果它返回 2，则该线的折叠级别为 2。除了整数外还有其他的值，但我不打算介绍它们。如果你好奇，可以查阅`:h fold-expr`。
 
-First, let's change the foldmethod:
+首先，更改折叠方法：
 
 ```
 :set foldmethod=expr
 ```
 
-Suppose you have a list of breakfast foods and you want to fold all breakfast items starting with "p":
+假设您有一份早餐食品列表，并且想要折叠所有以 "p" 开头的早餐项：
 
 ```
 donut
@@ -248,21 +250,21 @@ salmon
 scrambled eggs
 ```
 
-Next, change the `foldexpr` to capture the expressions starting with "p":
+其次，更改 `foldexpr` 为捕获以 "p" 开头的表达式：
 
 ```
 :set foldexpr=getline(v:lnum)[0]==\\"p\\"
 ```
 
-The expression above looks intimidating. Let's break it down:
+这表达式看起来有点吓人。我们来分解下：
 
-- `:set foldexpr` sets up the `'foldexpr'` option to accept a custom expression.
-- `getline()` is a Vimscript function that returns the content of any given line. If you run `:echo getline(5)`, it will return the content of line 5.
-- `v:lnum` is Vim's special variable for the `'foldexpr'` expression. Vim scans each line and at that moment stores each line's number in `v:lnum` variable.
-- `[0]` in the context of `getline(v:lnum)[0]` is the first character of each line. When Vim scans a line, `getline(v:lnum)` returns the content of each line. `getline(v:lnum)[0]` returns the first character of each line. On the first line of our list, "donut", `getline(v:lnum)[0]` returns "d". On the second line of our list, "pancake", `getline(v:lnum)[0]` returns "p".
-- `==\\"s\\"` is the second half of an equality expression. It checks if the expression you just evaluated is equal to "s". If it is true, it returns 1. If it is false, it returns 0. In Vim, 1 is truthy and 0 is falsy. So on the lines that start with an "s", it returns 1. Recall at the beginning of this section, if a `'foldexpr'` has a value of 1, then it has a fold level of 1.
+- `:set foldexpr` 设置 `'foldexpr'` 为自定义表达式。
+- `getline()` 是 Vim 脚本的一个函数，它返回指定行的内容。如运行 `:echo getline(5)` 可以获取第5行的内容。
+- `v:lnum` 是 Vim `'foldexpr'` 表达式的特殊变量。Vim 在扫描每一行时，都会将行号存储至 `v:lnum` 变量。
+- `[0]` 处于 `getline(v:lnum)[0]` 语境时，代表每一行的第一个字符。Vim 在扫描某一行时，`getline(v:lnum)` 返回该行的内容，而 `getline(v:lnum)[0]` 则返回这一行的第一个字符。例如，我们早餐食品列表的第一行是 "donut"，则 `getline(v:lnum)[0]` 返回 "d"；列表的第二行是 "pancake"，则 `getline(v:lnum)[0]` 返回 "p"。
+- `==\\"s\\"` 是等式表达式的后半部分，它检查刚才表达式的计算结果是否等于 "s"。如果是，则返回1，否则返回0。在 Vim 的世界里，1代表真，0代表假。所以，那些以 "s" 开头的行，表达式都会返回1。回想一下本节的开始，如果 `'foldexpr'` 的值为1，则折叠级别为1。
 
-After running this expression, you should see:
+在运行这个表达式后，您将看到：
 
 ```
 donut
@@ -271,11 +273,11 @@ salmon
 scrambled eggs
 ```
 
-## Diff Fold
+## 差异折叠
 
-Vim can do a diff procedure to compare two or more files.
+Vim 可以对多个文件进行差异比较。
 
-If you have `file1.txt`:
+如果您有 `file1.txt`：
 
 ```
 vim is awesome
@@ -290,7 +292,7 @@ vim is awesome
 vim is awesome
 ```
 
-And `file2.txt`:
+以及 `file2.txt`：
 
 ```
 vim is awesome
@@ -305,7 +307,7 @@ vim is awesome
 emacs is ok
 ```
 
-Run `vimdiff file1.txt file2.txt`:
+运行 `vimdiff file1.txt file2.txt`：
 
 ```
 +-- 3 lines: vim is awesome -----
@@ -318,11 +320,11 @@ vim is awesome
 [vim is awesome] / [emacs is ok]
 ```
 
-Vim automatically folds some of the identical lines. When you are running the `vimdiff` command, Vim automatically uses `foldmethod=diff`. If you run `:set foldmethod?`, it will return `diff`.
+Vim 会自动折叠一些相同的行。运行 `vimdiff` 命令时，Vim 会自动使用 `foldmethod=diff`。此时如果运行 `:set foldmethod?`，它将返回 `diff`。
 
-## Persisting Fold
+## 持久化折叠
 
-You loses all fold information when you close the Vim session. If you have this file, `count.txt`:
+当关闭 Vim 会话后，您将失去所有的折叠信息。假设您有 `count.txt` 文件：
 
 ```
 one
@@ -332,7 +334,7 @@ four
 five
 ```
 
-Then do a manual fold from line "three" down (`:3,$fold`):
+手动从第三行开始往下折叠 (`:3,$fold`)：
 
 ```
 one
@@ -340,42 +342,42 @@ two
 +-- 3 lines: three ---
 ```
 
-When you exit Vim and reopen `count.txt`, the folds are no longer there!
+当您退出 Vim 再重新打开 `count.txt` 后，这些折叠都不见了！
 
-To preserve the folds, after folding, run:
+要在折叠后保留它们，可以运行：
 
 ```
 :mkview
 ```
 
-Then when you open up `count.txt`, run:
+当打开 `count.txt` 后，运行：
 
 ```
 :loadview
 ```
 
-Your folds are restored. However, you have to manually run `mkview` and `loadview`. I know that one of these days, I will forget to run `mkview` before closing the file and I will lose all the folds. Wouldn't it be nice if you can automate this?
+您的折叠信息都被保留下来了。然而，您需要手动运行 `mkview` 和 `loadview`。我知道，终有一日，我会忘记运行 `mkview` 就关闭文件了，接着便会丢失所有折叠信息。能不能自动实现这个呢？
 
-Definitely! To automatically run `mkview` when you close a `.txt` file and run `loadview` when you open a `.txt` file, add this in your vimrc:
+当然能！要在关闭 `.txt` 文件时自动运行 `mkview`，以及在打开 `.txt` 文件后自动运行 `loadview`，将下列内容添加至您的 vimrc：
 
 ```
 autocmd BufWinLeave *.txt mkview
 autocmd BufWinEnter *.txt silent loadview
 ```
 
-You have seen the `autocommand` from the previous chapter. It is used to execute a command on an event trigger. There are two events to accomplish this:
+在上一章您已经见过 `autocommand` 了，它用于在事件触发时执行一条命令。现在有两个事件可以用于实现操作：
 
-- `BufWinLeave` for when you remove a buffer from a window.
-- `BufWinEnter` for when you load a buffer in a window.
+- `BufWinLeave` 从窗口中删除缓冲时。
+- `BufWinEnter` 在窗口中加载缓冲时。
 
-Now after you fold inside a `.txt` file and exit Vim, the next time you open that file, your fold information will be restored.
+现在，即使您在 `.txt` 文件内折叠内容后直接退出 Vim，下次再打开该文件时，您的折叠信息都能自动恢复。
 
-By default, Vim saves the fold information when running `mkview` inside `~/.vim/view` for the Unix system. For more information, check out `:h 'viewdir'`.
+默认情况下，在 Unix 系统的 `~/.vim/view` 内运行 `mkview` 时，Vim 都会保存折叠信息。您可以查阅 `:h 'viewdir'` 来了解更多信息。
 
-## Learn Fold The Smart Way
+## 聪明地学习折叠
 
-When I first started Vim, I would skip learning Vim fold because I didn't think it was useful. However, the longer I code, the more useful I find folding is. Strategically placed folds can give you a better overview of the text structure, like a book's *table of content*.
+当我刚开始使用 Vim 时， 我会跳过学习 Vim 折叠，因为我觉得它不太实用。然而，随着我码龄的增长，我越发觉得折叠功能大有用处。得当地使用折叠功能，文本结构可以更加清晰，犹如一本书籍的目录。
 
-When you learn fold, start with the manual fold because that can be used on-the-go. Then gradually learn different tricks to do indent and marker folds. Finally, learn how to do syntax and expression folds. You can even use the latter two to write your own Vim plugins.
+当您学习折叠时，请从手动折叠开始，因为它可以随学随用。然后逐渐学习不同的技巧来使用缩进和标志折叠。最后，学习如何使用语法和表达式折叠。您甚至可以使用后两个来编写您自己的 Vim 插件。
 
-Now that you know how to do fold, let's learn something different: version control with git.
+现在，您已经知道如何进行折叠了。让我们来学习下一个：使用 git 进行版本控制。
