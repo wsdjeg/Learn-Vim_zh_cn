@@ -47,6 +47,7 @@ vim -d file1.txt file2.txt
 <p align="center">
   <img alt="Basic diffing with Vim" width="900" height="auto" src="images/diffing-basic.png">
 </p>
+
 `vimdiff` 并排显示两个缓冲区。左边是 `file1.txt`，右边是 `file2.txt`。不同的两行（apples 和 oranges）会被高亮显示。
 
 假设您要使第二个缓冲区变成 apples，而不是 oranges。若想从 `file1.txt` 传输您当前位置的内容到 `file2.txt`，首先使用 `]c` 跳转到下一处差异（使用 `[c` 可跳回上一处），现在光标应该在 apples 上了。接着运行 `:diffput`。此时，这两个文件都是 apples 了。
@@ -54,6 +55,7 @@ vim -d file1.txt file2.txt
 <p align="center">
   <img alt="Finding files in FZF" width="900" height="auto" src="images/diffing-apples.png">
 </p>
+
 如果您想从另一个缓冲区（orange juice）传输文本来替代当前缓冲区（apple juice），首先使用 `]c` 跳转至下一处差异，此时光标应该在 apple juice 上。接着运行 `:diffget` 获取另一个缓冲区的 orange juice 来替代当前缓冲区中的 apple juice。
 
 `:diffput` 将文本从当前缓冲区*输出*到另一个缓冲区。`:diffget` 从另一个缓冲区*获取*文本到当前缓冲区。如果有多个缓冲区，可以运行 `:diffput fileN.txt` 和 `:diffget fileN.txt` 来指定缓冲区 fileN。
@@ -170,6 +172,7 @@ git mergetool
 <p align="center">
   <img alt="Three-way mergetool with Vim" width="900" height="auto" src="images/mergetool-initial.png">
 </p>
+
 Vim 显示了四个窗口。注意一下顶部三个：
 
 - `LOCAL` 包含了 `grapes`。这是“本地”中的变化，也是您要合并的内容。
@@ -280,6 +283,7 @@ vim-fugitive 插件允许您在不离开 Vim 编辑器的情况下运行 git 命
 <p align="center">
   <img alt="Finding files in FZF" width="900" height="auto" src="images/fugitive-gdiffsplit.png">
 </p>
+
 由于您处于 `vimdiff` 模式中，因此您可以使用 `:diffput` 和 `:diffget` 来*获取* 或 *输出*差异。
 
 ## Gwrite 和 Gread
