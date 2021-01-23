@@ -1,12 +1,12 @@
-# Ch18. Git
+# 第18章 Git
 
-Vim and git are two great tools for two different things. Git is a version control tool. Vim is a text editor. In this chapter, you will learn different ways to integrate Vim and git together.
+Vim 和 Git 是两种实现不同功能的伟大工具。Vim 用于文本编辑，Git 用于版本控制。在本章中，您将学习如何将 Vim 和 Git 集成在一起。
 
-## Diffing
+## 差异比较
 
-In the last chapter, you saw how you can run a `vimdiff` command to show differences between multiple files.
+在上一章中，您看到了如何运行 `vimdiff` 命令以显示多个文件之间的差异。
 
-Suppose you have two files, `file1.txt` and `file2.txt`. Inside `file1.txt`:
+假设您有两个文件，`file1.txt` 和 `file2.txt`。`file1.txt` 的内容如下：
 
 ```
 pancakes
@@ -19,7 +19,7 @@ apple juice
 yogurt
 ```
 
-Inside `file2.txt`:
+`file2.txt` 的内容如下：
 
 ```
 pancakes
@@ -32,13 +32,13 @@ orange juice
 yogurt
 ```
 
-To see the differences between both files, run:
+若要查看两个文件之间的差异，请运行：
 
 ```
 vimdiff file1.txt file2.txt
 ```
 
-Alternatively you could run:
+或者也可以运行：
 
 ```
 vim -d file1.txt file2.txt
@@ -47,26 +47,24 @@ vim -d file1.txt file2.txt
 <p align="center">
   <img alt="Basic diffing with Vim" width="900" height="auto" src="images/diffing-basic.png">
 </p>
+`vimdiff` 并排显示两个缓冲区。左边是 `file1.txt`，右边是 `file2.txt`。不同的两行（apples 和 oranges）会被高亮显示。
 
-`vimdiff` displays two buffers side-by-side. On the left is `file1.txt` and on the right is `file2.txt`. The two differences (apples and oranges) are highlighted on both lines.
-
-Suppose you want to make the second buffer to have apples, not oranges. To transfer the content from your current position, `file1.txt`, to `file2.txt`, jump to the next diff with `]c` (to jump to the previous diff, use `[c`). The cursor should be on apples now. Run `:diffput`. Both files should now have apples.
+假设您要使第二个缓冲区变成 apples，而不是 oranges。若想从 `file1.txt` 传输您当前位置的内容到 `file2.txt`，首先使用 `]c` 跳转到下一处差异（使用 `[c` 可跳回上一处），现在光标应该在 apples 上了。接着运行 `:diffput`。此时，这两个文件都是 apples 了。
 
 <p align="center">
   <img alt="Finding files in FZF" width="900" height="auto" src="images/diffing-apples.png">
 </p>
+如果您想从另一个缓冲区（orange juice）传输文本来替代当前缓冲区（apple juice），首先使用 `]c` 跳转至下一处差异，此时光标应该在 apple juice 上。接着运行 `:diffget` 获取另一个缓冲区的 orange juice 来替代当前缓冲区中的 apple juice。
 
-If you need to transfer the text from the other buffer (orange juice) to replace the text on the current buffer (apple juice), first jump to the next diff with `]c`. Your cursor now should be on apple juice. Run `:diffget` to get the orange juice from another buffer to replace apple juice in our buffer.
+`:diffput` 将文本从当前缓冲区*输出*到另一个缓冲区。`:diffget` 从另一个缓冲区*获取*文本到当前缓冲区。如果有多个缓冲区，可以运行 `:diffput fileN.txt` 和 `:diffget fileN.txt` 来指定缓冲区 fileN。
 
-`:diffput` *puts out* the text from the current buffer to another buffer. `:diffget` *gets* the text from another buffer to the current buffer. If you have multiple buffers, you can run `:diffput fileN.txt` and `:diffget fileN.txt` to target the fileN buffer.
+## 使用 Vim 作为合并工具
 
-## Vim As A Merge Tool
+> “我非常喜欢解决合并冲突。” ——佚名
 
-> "I love resolving merge conflicts!" - Nobody
+我不知道有谁喜欢解决合并冲突，但总之，合并冲突是无法避免的。在本节中，您将学习如何利用 Vim 作为解决合并冲突的工具。
 
-I don't know anyone who likes resolving merge conflicts. However, they are inevitable. In this section, you will learn how to leverage Vim as a merge conflict resolution tool.
-
-First, change the default merge tool to use `vimdiff` by running:
+首先，运行下列命令来将默认合并工具更改为 `vimdiff`：
 
 ```
 git config merge.tool vimdiff
@@ -74,7 +72,7 @@ git config merge.conflictstyle diff3
 git config mergetool.prompt false
 ```
 
-Alternatively, you can modify the `~/.gitconfig` directly (by default it should be in root, but yours might be in different place). If you haven't already, make your `gitconfig` to look like:
+或者您也可以直接修改 `~/.gitconfig`（默认情况下，它应该处于根目录中，但您的可能在不同的位置）。配置您的 `gitconfig` 成如下内容，就可以开始了：
 
 ```
 [core]
@@ -86,13 +84,13 @@ Alternatively, you can modify the `~/.gitconfig` directly (by default it should 
   prompt = false
 ```
 
-Let's create a fake merge conflict to test this out. Create a directory `/food` and make it a git repository:
+让我们创建一个假的合并冲突来测试一下。首先创建一个目录 `/food`，并初始化 git 仓库：
 
 ```
 git init
 ```
 
-Add a file, `breakfast.txt`. Inside:
+添加 `breakfast.txt` 文件，内容为：
 
 ```
 pancakes
@@ -100,20 +98,20 @@ waffles
 oranges
 ```
 
-Add the file and commit it:
+添加文件并提交它：
 
 ```
 git add .
 git commit -m "Initial breakfast commit"
 ```
 
-Next, create a new branch and call it apples branch:
+接着，创建一个新分支 apples：
 
 ```
 git checkout -b apples
 ```
 
-Change the `breakfast.txt`:
+更改 `breakfast.txt` 文件为：
 
 ```
 pancakes
@@ -121,20 +119,20 @@ waffles
 apples
 ```
 
-Save the file, then add and commit the change:
+保存文件，添加并提交更改：
 
 ```
 git add .
 git commit -m "Apples not oranges"
 ```
 
-Great. Now you have oranges in the master branch and apples in the apples branch. Let's return to the master branch:
+真棒！现在 master 分支有 oranges，而 apples 分支有 apples。接着回到 master 分支：
 
 ```
 git checkout master
 ```
 
-Inside `breakfast.txt`, you should see the base text, oranges. Let's change it to grapes because they are in season right now:
+在 `breakfast.txt` 文件中，您应该能看到原来的文本 oranges。接着将它改成 grapes，因为它是现在的应季水果：
 
 ```
 pancakes
@@ -142,20 +140,20 @@ waffles
 grapes
 ```
 
-Save, add, and commit:
+保存、添加、提交：
 
 ```
 git add .
 git commit -m "Grapes not oranges"
 ```
 
-Phew, that's a lot of setup. Now you are ready to merge the apples branch into the master branch:
+嚯！这么多步骤！现在准备要将 apples 分支合并进 master 分支了：
 
 ```
 git merge apples
 ```
 
-You should see an error:
+您应该会看到如下错误：
 
 ```
 Auto-merging breakfast.txt
@@ -163,7 +161,7 @@ CONFLICT (content): Merge conflict in breakfast.txt
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-A conflict, great! Let's resolve the conflict using our newly-configured `mergetool`. Run:
+没错，一个冲突！现在一起来用一下新配置的 `mergetool` 来解决冲突吧！运行：
 
 ```
 git mergetool
@@ -172,14 +170,13 @@ git mergetool
 <p align="center">
   <img alt="Three-way mergetool with Vim" width="900" height="auto" src="images/mergetool-initial.png">
 </p>
+Vim 显示了四个窗口。注意一下顶部三个：
 
-Vim displays four windows. Pay attention to the top three:
+- `LOCAL` 包含了 `grapes`。这是“本地”中的变化，也是您要合并的内容。
+- `BASE` 包含了 `oranges`。这是 `LOCAL` 和 `REMOTE` 的共同祖先，用于比较它们之间的分歧。
+- `REMOTE` 包含了 `apples`。这是要被合并的内容。
 
-- `LOCAL` contains `grapes`. This is the change in "local", what you are merging into.
-- `BASE` contains `oranges`. This is the common ancestor between `LOCAL` and `REMOTE` to compare how they diverge.
-- `REMOTE` contains `apples`. This is what is being merged into.
-
-At the bottom (the fourth window) you see:
+底部窗口（也即第四个窗口），您能看到：
 
 ```
 pancakes
@@ -193,21 +190,21 @@ apples
 >>>>>>> apples
 ```
 
-The fourth window contains the merge conflict texts. With this setup, it is easier to see what change each environment has. You can see the content from `LOCAL`, `BASE`, and `REMOTE` at the same time. If you want to *get* the change from `LOCAL` (`grapes`), with the cursor over the highlighted areas, from the fourth window, run `:diffget LOCAL`. Likewise, if you want to *get* the change from `BASE` (`oranges`), run `:diffget BASE` and if you want to *get* the change from `REMOTE` (`apples`), run `:diffget REMOTE`.
+第四个窗口包含了合并冲突文本。有了这步设置，就能更轻松看到哪个环境发生了什么变化。您可以同时查看 `LOCAL`、`BASE` 和 `REMOTE` 的内容。如果您在第四个窗口，将光标移至高亮处，再运行 `:diffget LOCAL`，就可以*获取*来自 `LOCAL` 的改变（`grapes`）。同样，运行 `:diffget BASE` 可以获取来自 `BASE` 的改变（`oranges`），而运行 `:diffget REMOTE` 可以获取来自 `REMOTE` 的改变（`apples`）。
 
-In this case, let's get the change from `LOCAL`. Run `:diffget LO` (short for `LOCAL`). The fourth window will now have grapes. Save and exit all files (`:qall`) when you are done. That wasn't bad, right?
+在这个例子中，我们试着获取来自 `LOCAL` 的改变。运行 `:diffget LO`（`LOCAL` 的简写），第四个窗口变成了 grapes。完成后，就可以保存并退出所有文件（`:qall`）了。还不错吧？
 
-If you notice, you also have a file `breakfast.txt.orig` now. Git creates a backup file in case things don't go well. If you don't want git to create a backup during a merge, run:
+稍加留意您会发现，现在多了一个 `breakfast.txt.orig` 文件。这是 Git 防止事与愿违而创建的备份文件。如果您不希望 Git 在合并期间创建备份文件，可以运行：
 
 ```
 git config --global mergetool.keepBackup false
 ```
 
-## Git Inside Vim
+## 在 Vim 中使用 Git
 
-Vim does not have a native git integration. However, one way to run git commands from Vim is to use the bang operator, `!`, in the command-line mode.
+Vim 本身没有集成 Git，但您仍然可以在 Vim 中执行 Git 命令。一种方法是在命令行模式中使用 `!` 叹号运算符。
 
-Any git command can be run with `!`:
+使用 `!` 可以运行任何 Git 命令：
 
 ```
 :!git status
@@ -216,16 +213,16 @@ Any git command can be run with `!`:
 :!git push origin master
 ```
 
-You can also use Vim's `%` (current buffer) or `#` (other buffer) conventions:
+您还可以使用 Vim 的特殊字符 `%` (当前缓冲区) 或 `#` (其他缓冲区)：
 
 ```
 :!git add %         " git add current file
 :!git checkout #    " git checkout the other file
 ```
 
-## Plugins
+## 插件
 
-To integrate git inside Vim, you have to use plugins. Below is a list of popular git-related plugins for Vim:
+如果要在 Vim 中集成 Git，您必须使用插件。以下是 Vim 中较流行的 Git 相关插件列表：
 
 - [vim-gitgutter](https://github.com/airblade/vim-gitgutter)
 - [vim-signify](https://github.com/mhinz/vim-signify)
@@ -235,42 +232,42 @@ To integrate git inside Vim, you have to use plugins. Below is a list of popular
 - [vim-twiggy](https://github.com/sodapopcan/vim-twiggy)
 - [rhubarb](https://github.com/tpope/vim-rhubarb)
 
-One of the most popular ones is vim-fugitive. For the remaining of the chapter, I will go over a several git workflow using this plugin.
+其中最流行的是 vim-fugitive。本章的剩余部分，我将使用此插件来介绍几个 git 工作流。
 
 ## Vim-Fugitive
 
-The vim-fugitive plugin allows you to run the git CLI without leaving the Vim editor. You will find that some commands are better when executed from inside Vim.
+vim-fugitive 插件允许您在不离开 Vim 编辑器的情况下运行 git 命令行界面。您会发现，有些命令在 Vim 内部执行时会更好。
 
-To get started, install the vim-fugitive with a vim plugin manager ( [vim-plug](https://github.com/junegunn/vim-plug), [vundle](https://github.com/VundleVim/Vundle.vim), [dein.vim](https://github.com/Shougo/dein.vim), etc).
+开始前，请先使用 Vim 插件管理器（[vim-plug](https://github.com/junegunn/vim-plug)、[vundle](https://github.com/VundleVim/Vundle.vim)、[dein.vim](https://github.com/Shougo/dein.vim) 等）安装 vim-fugitive。
 
 ## Git Status
 
-When you run the `:Git` command without any parameters, vim-fugitive displays a git summary window. It shows the untracked, unstaged, and staged file(s). While in this "`git status`" mode, you can do several things:
+当您不带参数地运行 `:Git` 命令时，vim-fugitive 将显示一个 git 概要窗口，它显示了未跟踪、未暂存和已暂存的文件。在此 “`git status`” 模式下，您可以做一些操作：
 
-- `Ctrl-n` / `Ctrl-p` to go up or down the file list.
-- `-` to stage or unstage the file name under the cursor.
-- `s` to stage the file name under the cursor.
-- `u` to unstage the file name under the cursor.
-- `>` / `<` to display or hide an inline diff of the file name under the cursor.
+- `Ctrl-n` / `Ctrl-p` 转到下一个 / 上一个文件。
+- `-` 暂存或取消暂存光标处的文件。
+- `s` 暂存光标处的文件。
+- `u` 取消暂存光标处的文件。
+- `>` / `<` 内联显示或隐藏光标处文件的差异变化。
 
 <p align="center">
   <img alt="Finding files in FZF" width="900" height="auto" src="images/fugitive-git.png">
 </p>
 
-For more, check out `:h fugitive-staging-maps`.
+查阅 `:h fugitive-staging-maps` 可获得更多信息。
 
 ## Git Blame
 
-When you run the `:Git blame` command from the current file, vim-fugitive displays a split blame window. This can be useful to see the person responsible for writing that buggy line of code so you can yell at him / her (that person is probably me).
+在当前文件运行 `:Git blame` 命令，vim-fugitive 可以显示一个拆分的问责窗口。这有助于追踪那些 BUG 是谁写的，接着就可以冲他/她怒吼（虽然那个人可能是我）。
 
-Some things you can do while in this `"git blame"` mode:
+在  `"git blame"` 模式下您可以做：
 
-- `q` to close the blame window.
-- `A` to resize the author column.
-- `C` to resize the commit column.
-- `D` to resize the date / time column.
+- `q` 关闭问责窗口。
+- `A` 调整大小至作者列。
+- `C` 调整大小至提交列。
+- `D` 调整大小至日期/时间列。
 
-For more, check out `:h :Git_blame`.
+查阅 `:h :Git_blame` 可获得更多信息。
 
 <p align="center">
   <img alt="Finding files in FZF" width="900" height="auto" src="images/fugitive-git-blame.png">
@@ -278,42 +275,41 @@ For more, check out `:h :Git_blame`.
 
 ## Gdiffsplit
 
-When you run the `:Gdiffsplit` command, vim-fugitive runs a `vimdiff` of the current file's latest changes against the index or work tree. If you run `:Gdiffsplit <commit>`, vim-fugitive runs a `vimdiff` against that file inside `<commit>`.
+当您运行 `:Gdiffsplit` 命令后，vim-fugitive 会根据索引或工作树中的版本，与当前文件的最新更改执行 `vimdiff`。如果运行 `:Gdiffsplit <commit>`，vim-fugitive 则会根据 `<commit>` 中的版本来执行 `vimdiff`。
 
 <p align="center">
   <img alt="Finding files in FZF" width="900" height="auto" src="images/fugitive-gdiffsplit.png">
 </p>
+由于您处于 `vimdiff` 模式中，因此您可以使用 `:diffput` 和 `:diffget` 来*获取* 或 *输出*差异。
 
-Because you are in a `vimdiff` mode, you can *get* or *put* the diff with `:diffput` and `:diffget`.
+## Gwrite 和 Gread
 
-## Gwrite And Gread
+当您在更改文件后运行 `:Gwrite` 命令，vim-fugitive 将暂存更改，就像运行 `git add <current-file>` 一样。
 
-When you run the `:Gwrite` command in a file after you make changes, vim-fugitive stages the changes. It is like running `git add <current-file>`.
-
-When you run the `:Gread` command in a file after you make changes, vim-fugitive restores the file to the state prior to the changes. It is like running `git checkout <current-file>`. One advantage of running `:Gread` is the action is undo-able. If, after you run `:Gread`, you change your mind and want to keep the old change, you can just run undo (`u`) and Vim will undo the `:Gread` action. This would not have been possible if you had run `git checkout <current-file>` from the CLI.
+当您在更改文件后运行 `:Gread` 命令，vim-fugitive 会将文件还原至更改前的状态，就像运行 `git checkout <current-file>` 一样。使用 `:Gread` 还有一个好处是操作可撤销。如果在运行 `:Gread` 后您改变主意，想要保留原来的更改，您只需要撤消（`u`），Vim 将撤回 `:Gread` 操作。要换作是在命令行中运行 `git checkout <current-file>`，就完成不了这种操作了。
 
 ## Gclog
 
-When you run the `:Gclog` command, vim-fugitive displays the commit history. It is like running the `git log` command. Vim-fugitive uses Vim's quickfix to accomplish this, so you can use `:cnext` and `:cprevious` to traverse to the next or previous log information. You can open and close the log list with `:copen` and `:cclose`.
+当您运行 `:Gclog` 命令时，vim-fugitive 将显示提交历史记录，就像运行 `git log` 命令一样。Vim-fugitive 使用 Vim 的快速修复来完成此任务，因此您可以使用 `:cnext` 和 `:cprevious` 来遍历下一个或上一个日志信息。您还可以使用 `:copen` 和 `:cclose` 打开或关闭日志列表。
 
 <p align="center">
   <img alt="Finding files in FZF" width="900" height="auto" src="images/fugitive-git-log.png">
 </p>
 
-While in this `"git log"` mode, you can do two things:
-- View the tree.
-- Visit the parent (the previous commit).
+在 `"git log"` 模式中，您可以做两件事：
+- 查看树。
+- 访问父级（上一个提交）。
 
-You can pass to `:Gclog` arguments just like the `git log` command. If your project has a long commit history and you only need to view the last three commits, you can run `:Gclog -3`. If you need to filter it based on the committer's date, you can run something like `:Gclog --after="January 1" --before="March 14"`.
+您可以像 `git log` 命令一样，传递参数给 `:Gclog` 命令。如果您项目的提交历史记录很长，只想看最后三个提交，则可以运行 `:Gclog -3`。如果需要根据提交日期来筛选记录，可以运行类似 `:Gclog --after="January 1" --before="March 14"` 的命令。
 
-## More Vim-Fugitive
+## Vim-Fugitive 的更多功能
 
-These are only a few examples of what vim-fugitive can do. To learn more about vim-fugitive, check out `:h fugitive.txt`. The point is, most / all popular git commands probably have their vim-fugitive version. You just have to look for them in the documentation.
+以上只是寥寥几个 vim-fugitive 功能的例子，您可以查阅 `:h fugitive.txt` 来了解更多有关 vim-fugitive 的信息。关键是，大多数甚至所有流行的 git 命令可能都有他们的 vim-fugitive 版本，您只需在文档中查找它们。
 
-If you are inside one of vim-fugitive's "special mode" (for example, inside `:Git` or `:Git blame` mode) and you want to learn what shortcuts are available, press `g?`. Vim-fugitive will display the appropriate `:help` window for the mode you are in. Neat!
+如果您处于 vim-fugitive 的“特殊模式”（如 `:Git` 或 `:Git blame` 模式）中，按下 `g?` 可以了解当前有哪些可用的快捷键，Vim-fugitive 将为您所处的模式显示相应的 `:help` 窗口。棒极了！
 
-## Learn Vim And Git The Smart Way
+## 聪明地学习 Vim 和 Git
 
-Everybody has a different git workflow. You may find vim-fugitive to be a good compliment to your workflow (or not). Regardless, I would strongly encourage you to check out all the plugins listed above. There are probably others I didn't list. Use the best tool for the job.
+每个人都有不同的 git 工作流，可能 vim-fugitive 非常合适您的工作流（也可能不适合）。总之，我强烈建议您试试上面列出的所有插件。可能还有一些其他的我没有列出来，但适合您工作的就是最好的。
 
-One obvious way to get better with Vim-git integration is to read more about git. Git, on its own, is a vast topic and I am only showing a small part of it. With that, let's *git going* (pardon the pun) and talk about how to use Vim to compile your code!
+更多地了解 git 可以使您与 Vim-git 集成插件工作得更好。Git 本身是一个很庞大的主题，我只向您展示了它其中很小的一部分。好了，接下来谈谈如何使用 Vim 编译您的代码。
