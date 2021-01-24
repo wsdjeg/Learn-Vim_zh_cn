@@ -1,40 +1,40 @@
-# Ch19. Compile
+# 第19章 编译
 
-Compiling is an important subject for many languages. In this chapter, you will learn how to compile from Vim. In addition, you will look at ways to take advantage of Vim's `:make` command.
+编译是许多编程语言的重要主题。在本章中，您将学习如何在 Vim 中编译。此外，您将看到如何利用好 Vim 的 `:make` 命令。
 
-## Compile From the Command Line
+## 从命令行编译
 
-You can use the bang operator (`!`) to compile. If you need to compile your `.cpp` file with `g++`, run:
+您可以使用叹号运算符（`!`）进行编译。如果您需要使用 `g++` 来编译 `.cpp` 文件，可以运行：
 
 ```
 :!g++ hello.cpp -o hello
 ```
 
-However, having to manually type the filename and the output filename each time is error-prone and tedious. A makefile is the way to go.
+但要每次手动指定文件名和输出文件名会非常繁琐和容易出错。而 makefile 是条可行之路。
 
 ## Makefile
 
-In this section, I will briefly go over makefile basics. If you already know how to use a makefile, feel free to jump to the next section. In the current directory, create a file named `makefile`. Put this inside:
+在本节中，我将简要介绍一些 makefile 的基础知识。如果您已经知道如何使用 makefile，可以直接跳转到下一部分。在当前目录中，创建一个 `makefile` 文件，内容是：
 
 ```
 all:
 	echo "Hello all"
 ```
 
-Run the `make` command from the terminal:
+在终端中运行 `make` 命令：
 
 ```
 make
 ```
 
-You will see:
+您将看到：
 
 ```
 echo "Hello all"
 Hello all
 ```
 
-The terminal outputs the echo command itself and its output. You can have multiple "targets" in a makefile. Let's add a few:
+终端输出了 echo 命令本身及其输出。您可以在 makefile 中编写多个“目标”。现在我们多添加几个：
 
 ```
 all:
@@ -45,7 +45,7 @@ list_pls:
 	ls
 ```
 
-Now you can run the `make` command with different targets:
+接着您可以用不同目标运行 `make`  命令：
 
 ```
 make foo
@@ -55,20 +55,20 @@ make list_pls
 ## returns the ls command
 ```
 
-The `make` command outputs the actual command in addition to the output. To suppress the output of the actual command, append `@` before that command, for example:
+除了输出之外，`make` 还输出了实际命令。要停止输出实际命令，可以在命令开头添加 `@`：
 
 ```
 all:
   @echo "Hello all"
 ```
 
-Now when you run `make`, you only see "Hello all" and not `echo "Hello all"`.
+现在运行 `make`，您将仅看到 "Hello all" 而没有 `echo "Hello all"` 了。
 
 ## `:make`
 
-Vim has a `:make` command to run a makefile. When you run it, Vim looks for a makefile in the current directory to execute.
+Vim 有运行 makefile 的 `:make` 命令。当您运行它时，Vim 会在当前目录查找 makefile 并执行它。
 
-If you haven't already, create a file named `makefile` in the current directory and put these inside:
+您可以在当前目录创建 `makefile` 文件并添加如下内容来跟随教程：
 
 ```
 all:
@@ -79,13 +79,13 @@ list_pls:
 	ls
 ```
 
-Run this from Vim:
+在 Vim 中运行：
 
 ```
 :make
 ```
 
-Vim executes it the same way as when you're running it from the terminal. The `:make` command accepts parameter just like the terminal `make` command. Run:
+Vim 执行它的方式与从终端运行它的方式相同。`:make` 命令也接受终端中 `make` 命令的参数。运行：
 
 ```
 :make foo
@@ -93,32 +93,32 @@ Vim executes it the same way as when you're running it from the terminal. The `:
 :make list_pls
 ```
 
-The `:make` command uses Vim's `quickfix` to store any error if you run a bad command. Let's run a nonexisting target:
+如果命令执行异常，`:make` 命令将使用 Vim 的 `quickfix` 来存储这些错误。现在试着运行一个不存在的目标：
 
 ```
 :make dontexist
 ```
 
-You should see an error running that command. To view that error, run the `quickfix` command `:copen` to view the ``quickfix`` window:
+您应该会看到该命令执行错误。运行 `quickfix` 命令 `:copen` 可以打开 `quickfix` 窗口来查看该错误：
 
 ```
 || make: *** No rule to make target `dontexist'.  Stop.
 ```
 
-## Compile With `make`
+## 使用 `make` 编译
 
-Let's use the makefile to compile a basic `.cpp` program. First, let's create a `hello.cpp` file:
+让我们使用 makefile 来编译一个基本的 `.cpp` 程序。首先创建一个 `hello.cpp` 文件：
 
 ```
 #include <iostream>
 
 int main() {
-    std::cout << "Hello!\\n";
+    std::cout << "Hello!\n";
     return 0;
 }
 ```
 
-Update your `makefile` to build and run a `.cpp` file:
+然后，更新 `makefile` 来编译和运行 `.cpp` 文件：
 
 ```
 all:
@@ -129,98 +129,98 @@ run:
 	./hello
 ```
 
-Now run:
+现在运行：
 
 ```
 :make build
 ```
 
-The `g++` compiles `./hello.cpp` and creates `./hello`. Then run:
+`g++` 将编译 `./hello.cpp` 并且输出 `./hello`。接着运行：
 
 ```
 :make run
 ```
 
-You should see `"Hello!"` printed on the terminal.
+您应该会看到终端上打印出了 `"Hello!"`。
 
 ## `makeprg`
 
-When you run `:make`, Vim actually runs whatever command that is set under the `makeprg` option. If you run `:set makeprg?`, you'll see:
+当您运行 `:make` 时，Vim 实际上会执行 `makeprg` 选项所设置的任何命令，您可以运行 `:set makeprg?` 来查看它：
 
 ```
 makeprg=make
 ```
 
-The default `:make` command is the `make` external command. To change the `:make` command to execute `g++ <your-file-name>` each time you run it, run:
+`:make` 的默认命令是外部的 `make` 命令。若要将 `:make` 命令更改为：每次运行它则执行 `g++ <your-file-name>`，请运行：
 
 ```
 :set makeprg=g++\\ %
 ```
 
-The `\\` is to escape the space after `g++` (you need to escape the escape). The `%` symbol in Vim represents the current file. The command `g++\\ %` is equivalent to running `g++ hello.cpp`.
+`\\` 用于转义 `g++` 后的空格（转义本身也需要转义）。Vim 中 `%` 符号代表当前文件。因此，`g++\\ %` 命令等于运行 `g++ hello.cpp`。
 
-Go to `./hello.cpp` then run `:make`. Vim compiles `hello.cpp` and creates `a.out` because you didn't specify the output. Let's refactor it so it will name the compiled output with the name of the original file minus the extension. Run:
+转到 `./hello.cpp` 然后运行 `:make`，Vim 将编译 `hello.cpp` 并输出 `a.out`（因为您没有指定输出）。让我们重构一下，使用去掉扩展名的原始文件名来命名编译后的输出。运行：
 
 ```
 :set makeprg=g++\\ %\\ -o\\ %<
 ```
 
-The breakdown:
+上面的命令分解如下：
 
-- `g++\\ %` is the same as above. It is equivalent to running `g++ <your-file>`.
-- `-o` is the output option.
-- `%<` in Vim represents the current file name without an extension (`hello.cpp` becomes `hello`).
+- `g++\\ %` 如上所述，等同于运行 `g++ <your-file>`。
+- `-o` 输出选项。
+- `%<` 在 Vim 中代表了没有扩展名的当前文件名（如 `hello.cpp` 变成 `hello`）。
 
-When you run `:make` from inside `./hello.cpp`, it is compiled into `./hello`. To quickly execute `./hello` from inside `./hello.cpp`, run `:!./%<`. Again, this is the same as running `:!./<current-file-name-minus-the-extension>`.
+当您在 `./hello.cpp` 中运行 `:make` 时，它将编译为 `./hello`。要在 `./hello.cpp` 中快速地执行 `./hello`，可以运行 `:!./%<`。同样，它等同于运行 `:!./<current-file-name-minus-the-extension>`。
 
-For more, check out `:h :compiler` and `:h write-compiler-plugin`.
+查阅 `:h :compiler` 和 `:h write-compiler-plugin` 可以了解更多信息。
 
-## Auto-Compile On Save
+## 保存时自动编译
 
-You can further make life easier by automating compilation. Recall that you can use Vim's `autocommand` to automate actions based on certain events. To automatically compile `.cpp` files on each save:
+有了自动化编译，您可以让生活更加轻松。回想一下，您可以使用 Vim 的 `autocommand` 来根据某些事件自动执行操作。例如，要自动在每次保存后编译 `.cpp` 文件，您可以运行：
 
 ```
 :autocmd BufWritePost *.cpp make
 ```
 
-Each time you save inside a `.cpp` file, Vim executes the `make` command.
+现在您每次保存 `.cpp` 文件后，Vim 都将自动执行 `make` 命令。
 
-## Switching Compiler
+## 切换编译器
 
-Vim has a `:compiler` command to quickly switch compilers. Your Vim build probably comes with several pre-built compiler configurations. To check what compilers you have, run:
+Vim 有一个 `:compiler` 命令可以快速切换编译器。您的 Vim 可能附带了一些预构建的编译配置。要检查您拥有哪些编译器，请运行：
 
 ```
 :e $VIMRUNTIME/compilers/<tab>
 ```
 
-You should see a list of compilers for different programming languages.
+您应该会看到一个不同编程语言的编译器列表。
 
-To use the `:compiler` command, suppose you have a ruby file, `hello.rb`, and inside it has:
+若要使用 `:compiler` 命令，假设您有一个 ruby 文件 `hello.rb`，内容是：
 
 ```
 puts "Hello ruby"
 ```
 
-Recall that if you run `:make`, Vim executes whatever command is assigned to `makeprg` (default is `make`). If you run:
+回想一下，如果运行 `:make`，Vim 将执行赋值给 `makeprg` 的任何命令（默认是 `make`）。如果您运行：
 
 ```
 :compiler ruby
 ```
 
-Vim runs the `$VIMRUNTIME/compiler/ruby.vim` script and changes the `makeprg` to use the `ruby` command. Now if you run `:set makeprg?`, it should say `makeprg=ruby` (this depends on what is inside your `$VIMRUNTIME/compiler/ruby.vim` file or if you have another custom ruby compilers. Yours might be different). The `:compiler <your-lang>` command allows you to switch to different compilers  quickly. This is useful if your project uses multiple languages.
+Vim 执行 `$VIMRUNTIME/compiler/ruby.vim` 脚本，并将 `makeprg` 更改为使用 `ruby` 命令。现在如果您运行 `:set makeprg?`，它会显示 `makeprg=ruby`（这取决于您 `$VIMRUNTIME/compiler/ruby.vim` 里的内容，或者是否有其他自定义的 ruby 编译器，因此您的结果可能会有不同）。`:compiler <your-lang>` 命令允许您快速切换至其他编译器。如果您的项目使用多种语言，这会非常有用。
 
-You don't have to use the `:compiler` and `makeprg` to compile a program. You can run a test script, lint a file, send a signal, or anything you want.
+您不必使用 `:compiler` 或 `makeprg` 来编译程序。您可以运行测试脚本、分析文件、发送信号或任何您想要的内容。
 
-## Creating A Custom Compiler
+## 创建自定义编译器
 
-Let's create a simple Typescript compiler. Install Typescript (`npm install -g typescript`) to your machine. You should now have the `tsc` command. If you haven't played with typescript before, `tsc` compiles a Typescript file into a Javascript file. Suppose that you have a file, `hello.ts`:
+让我们来创建一个简单的 Typescript 编译器。先在您的设备上安装 Typescript（`npm install -g typescript`），安装完后您将有 `tsc` 命令。如果您之前没有尝试过 typescript，`tsc` 将 Typescript 文件编译成 Javascript 文件。假设您有一个 `hello.ts` 文件：
 
 ```
 const hello = "hello";
 console.log(hello);
 ```
 
-If you run `tsc hello.ts`, it will compile into `hello.js`. However, if you have the following expressions inside `hello.ts`:
+运行 `tsc hello.ts` 后，它将被编译成 `hello.js`。然而，如果 `hello.ts` 变成：
 
 ```
 const hello = "hello";
@@ -228,7 +228,7 @@ hello = "hello again";
 console.log(hello);
 ```
 
-This will throw an error because you can't mutate a `const` variable. Running `tsc hello.ts` will throw an error:
+这会抛出错误，因为不能更改一个 `const` 变量。运行 `tsc hello.ts` 的错误如下：
 
 ```
 hello.ts:2:1 - error TS2588: Cannot assign to 'person' because it is a constant.
@@ -240,105 +240,105 @@ hello.ts:2:1 - error TS2588: Cannot assign to 'person' because it is a constant.
 Found 1 error.
 ```
 
-To create a simple Typescript compiler, in your `~/.vim/` directory, add a `compiler` directory (`~/.vim/compiler/`), then create a `typescript.vim` file (`~/.vim/compiler/typescript.vim`). Put this inside:
+要创建一个简单的 Typescript 编译器，请在您的 `~/.vim/` 目录中新添加一个 `compiler` 目录（即 `~/.vim/compiler/`），接着创建 `typescript.vim` 文件（即 `~/.vim/compiler/typescript.vim`），并添加如下内容：
 
 ```
 CompilerSet makeprg=tsc
 CompilerSet errorformat=%f:\ %m
 ```
 
-The first line sets the `makeprg` to run the `tsc` command. The second line sets the error format to display the file (`%f`), followed by a literal colon (`:`) and an escaped space (`\ `), followed by the error message (`%m`). To learn more about the error formatting, check out `:h errorformat`.
+第一行设置 `makeprg` 为运行 `tsc` 命令。第二行将错误格式设置为显示文件（`%f`），后跟冒号（`:`）和转义的空格（`\ `），最后是错误消息（`%m`）。查阅 `:h errorformat` 可了解更多关于错误格式的信息。
 
-You should also read some of the pre-made compilers to see how others do it. Check out `:e $VIMRUNTIME/compiler/<some-language>.vim`.
+您还可以阅读一些预制的编译器，看看它们是如何实现的。输入 `:e $VIMRUNTIME/compiler/<some-language>.vim` 查看。
 
-Because some plugins may interfere with the Typescript file, let's open the `hello.ts` without any plugin, using the `--noplugin` flag:
+有些插件可能会干扰 Typescript 文件，可以使用 `--noplugin` 标志以零插件的形式打开`hello.ts` 文件：
 
 ```
 vim --noplugin hello.ts
 ```
 
-Check the `makeprg`:
+检查 `makeprg`：
 
 ```
 :set makeprg?
 ```
 
-It should say the default `make` program. To use the new Typescript compiler, run:
+它应该会显示默认的 `make` 程序。要使用新的 Typescript 编译器，请运行：
 
 ```
 :compiler typescript
 ```
 
-When you run `:set makeprg?`, it should say `tsc` now. Let's put it to the test. Run:
+当您运行 `:set makeprg?` 时，它应该会显示 `tsc` 了。我们来测试一下：
 
 ```
 :make %
 ```
 
-Recall that `%` means the current file. Watch your Typescript compiler work as expected! To see the list of error(s), run `:copen`.
+回想一下，`%` 代表当前文件。看看您的 Typescript 编译器是否如预期一样工作。运行 `:copen` 可以查看错误列表。
 
-## Async Compiler
+## 异步编译器
 
-Sometimes compiling can take a long time. You don't want to be staring at a frozen Vim while waiting for your compilation process to finish. Wouldn't it be nice if you can compile asynchronously so you can still use Vim during compilation?
+有时编译可能需要很长时间。在等待编译时，您不会想眼睁睁盯着已冻结的 Vim 的。如果可以异步编译，就可以在编译期间继续使用 Vim 了，岂不美哉？
 
-Luckily there are plugins to run async processes. The two big ones are:
+幸运的是，有插件来运行异步进程。有两个比较好的是：
 
 - [vim-dispatch](https://github.com/tpope/vim-dispatch)
 - [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim)
 
-In this chapter, I will go over vim-dispatch, but I would strongly encourage you to try all of them out there.
+在这一章中，我将介绍 vim-dispatch，但我强烈建议您尝试上述列表中所有插件。
 
-*Vim and NeoVim actually supports async jobs, but they are beyond the scope of this chapter. If you're curious, check out `:h job-channel-overview.txt`.*
+*Vim 和 NeoVim 实际上都支持异步作业，但它们超出了本章的范围。如果您好奇，可以查阅 `:h job-channel-overview.txt`。*
 
-## Plugin: Vim-dispatch
+## 插件：Vim-dispatch
 
-Vim-dispatch has several commands, but the two main ones are `:Make` and `:Dispatch` commands.
+Vim-dispatch 有几个命令，最主要的两个是 `:Make` 和 `:Dispatch`。
 
 ## `:Make`
 
-Vim-dispatch's `:Make` command is similar to Vim's `:make`, but it runs asynchronously. If you are in a Javascript project and you need to run `npm t`, you might attempt to set your makeprg to be:
+Vim-dispatch 的 `:Make` 命令与 Vim 的 `:make` 相似，但它以异步方式运行。如果您正处于 Javascript 项目中，并且需要运行 `npm t`，可以将 `makeprg` 设置为：
 
 ```
 :set makeprg=npm\\ t
 ```
 
-If you run:
+如果运行：
 
 ```
 :make
 ```
 
-Vim will execute `npm t`. Meanwhile, you are just staring at the frozen screen while your Javascript test runs. With vim-dispatch, you can just run:
+Vim 将执行 `npm t`。但同时，您只能盯着冻结了的屏幕。有了 vim-dispatch，您只需要运行：
 
 ```
 :Make
 ```
 
-Vim will run `npm t` asynchronously. This way, while `npm t` is running on a background process, you can edit your text with Vim. Neat!
+Vim 将启用后台进程异步运行 `npm t`，同时您还能在 Vim 中继续编辑您的文本。棒极了！
 
 ## `:Dispatch`
 
-The `:Dispatch` command works like the `:compiler` and the `:!` command.
+`:Dispatch` 命令的工作方式和 `:compiler` 及 `:!` 类似。
 
-Assume that you are inside a ruby spec file and you need to run a test. Run:
+假设您在 ruby spec 文件中，需要执行测试，可以运行：
 
 ```
 :Dispatch rspec %
 ```
 
-Vim will asynchronously run the `rspec` command against the current file (`%`).
+Vim 将对当前文件异步运行 `rspec` 命令。
 
-## Automating Dispatch
+## 自动调度
 
-Vim-dispatch has `b:dispatch` buffer variable that you can configure to evaluate specific command. You can leverage it with `autocmd`. If you add this in your vimrc:
+Vim-dispatch 有 `b:dispatch` 缓冲区变量，您可以配置它来执行特定命令，并利用上 `autocmd`。如果在您的 vimrc 中添加如下内容：
 
 ```
 autocmd BufEnter *_spec.rb let b:dispatch = 'bundle exec rspec %'
 ```
 
-Now each time you enter a file (`BufEnter`) that ends with `_spec.rb`, running `:Dispatch` automatically executes `bundle exec rspec <your-current-ruby-spec-file>`.
+现在每当您进入一个以 `_spec.rb` 结尾的文件（`BufEnter`），`:Dispatch` 将被自动运行以执行 `bundle exec rspec <your-current-ruby-spec-file>`。
 
-## Learn Compile The Smart Way
+## 聪明地学习编译
 
-In this chapter, you learned that you can use the `make` and `compiler` commands to run *any* process from inside Vim asynchronously to complement your programming workflow. Vim's ability to extend itself with other programs makes it powerful.
+在本章中，您了解到可以使用 `make` 和 `compiler` 命令从Vim内部异步运行*任何*进程，以完善您的编程工作流。Vim 拥有通过其他程序来扩展自身的能力，这使其变得强大。
 
