@@ -26,7 +26,7 @@ _学习 Vim（智能方式）_ 是一本优秀的学习 Vim 知识的书。
 - [Ch 16 - 标签](./ch16_tags.md)
 - [Ch 17 - 折叠](./ch17_fold.md)
 - [Ch 18 - Git](./ch18_git.md)
-- Ch 19 - 编译
+- [Ch 19 - 编译](./ch19_compile.md)
 - Ch 20 - 视图、会话和 Viminfo
 
 # 许可和版权
