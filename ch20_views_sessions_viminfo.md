@@ -1,14 +1,14 @@
-# Ch20. Views, Sessions, And Viminfo
+# 第20章 视图、会话和 Viminfo
 
-After you worked on a project for a while, you may find the project to gradually take shape with its own settings, folds, buffers, layouts, etc. It's like decorating your apartment after living in it for a while. The problem is, when you close Vim, you lose those changes. Wouldn't it be nice if you can keep those changes so the next time you open Vim, it looks just like you had never left?
+当您做了一段时间的项目后，您可能会发现这个项目逐渐形了成自己的设置、折叠、缓冲区、布局等，就像住了一段时间公寓后精心装饰了它一样。问题是，关闭 Vim 后，所有的这些更改都会丢失。如果能保留这些更改，等到下次打开 Vim 时，一切恢复如初，岂不美哉？
 
-In this chapter, you will learn how use View, Session, and Viminfo to preserve a "snapshot" of your projects.
+本章中，您将学习如何使用 视图、会话 和 Viminfo 来保存项目的“快照”。
 
-## View
+## 视图
 
-A View is the smallest subset of the three (View, Session, Viminfo). It is a collection of settings for one window. If you spend a long time working on a window and you want to preserve the maps and folds, you can use a View.
+视图是这三个部分（视图、会话、Viminfo）中的最小子集，它是一个窗口的设置的集合。如果您长时间在一个窗口上工作，并且想要保留其映射和折叠，您可以使用视图。
 
-Let's create a file called `foo.txt`:
+我们来创建一个 `foo.txt` 文件：
 
 ```
 foo1
@@ -23,12 +23,13 @@ foo9
 foo10
 ```
 
-In this file, create three changes:
-1. On line 1, create a manual fold `zf4j` (fold the next 4 lines).
-2. Change the `number` setting: `setlocal nonumber norelativenumber`. This will remove the number indicators on the left side of the window.
-3. Create a local mapping to go down two lines each time you press `j` instead of one: `:nnoremap <buffer> j jj`.
+在这个文件中，做三次修改：
 
-Your file should look like this:
+1. 在第 1 行，创建一个自定义折叠 `zf4j`（折叠接下来 4 行）。
+2. 更改 `number` 设置：`setlocal nonumber norelativenumber`。这会移除窗口左侧的数字指示器。
+3. 创建本地映射，每当按一次 `j` 时，向下两行：`:nnoremap <buffer> j jj`。
+
+您的文件看起来应该像：
 
 ```
 +-- 5 lines: foo1 -----
@@ -39,65 +40,65 @@ foo9
 foo10
 ```
 
-### Configuring View Attributes
+### 配置视图属性
 
-Run:
+运行：
 
 ```
 :set viewoptions?
 ```
 
-By default it should say (yours may look different depending on your vimrc):
+默认情况下会显示（根据您的 vimrc 可能会有所不同）：
 
 ```
 viewoptions=folds,cursor,curdir
 ```
 
-Let's configure `viewoptions`. The three attributes you want to preserve are the folds, the maps, and the local set options. If your setting looks like mine, you already have the `folds` option. You need to tell View to remember the `localoptions`. Run:
+我们来配置 `viewoptions`。要保留的三个属性分别是折叠、映射和本地设置选项。如果您的设置和我的相似，那么您已经有了 `folds` 选项。运行下列命令使视图记住 `localoptions`：
 
 ```
 :set viewoptions+=localoptions
 ```
 
-To learn what other options are available for `viewoptions`, check out `:h viewoptions`. Now if you run `:set viewoptions?`, you should see:
+查阅 `:h viewoptions` 可了解 `viewoptions` 的其他可用选项。现在运行 `:set viewoptions?`，您将看到：
 
 ```
 viewoptions=folds,cursor,curdir,localoptions
 ```
 
-### Saving The View
+### 保存视图
 
-With the `foo.txt` window properly folded and having `nonumber norelativenumber` options, let's save the View. Run:
+在 `foo.txt` 窗口经过适当折叠并设置了 `nonumber norelativenumber` 选项后，现在我们来保存视图。运行：
 
 ```
 :mkview
 ```
 
-Vim creates a View file.
+Vim 创建了一个视图文件。
 
-### View Files
+### 视图文件
 
-You might wonder, "Where did Vim save this View file?" To see where Vim saves it, run:
+您可能会想“Vim 将这个视图文件保存到哪儿了呢？”，运行下列命令就可以看到答案了：
 
 ```
 :set viewdir?
 ```
 
-The default should say `~/.vim/view` (if you have a different OS, it might show a different path. Check out `:h viewdir` for more). If you want to change it to a different path, add this into your vimrc:
+默认情况下会显示 `~/.vim/view`（根据您的操作系统，可能会有不同的路径。查阅 `:h viewdir` 获得更多信息）。在您的 vimrc 中添加下列内容，可以更改为不同路径：
 
 ```
 set viewdir=$HOME/else/where
 ```
 
-### Loading The View File
+### 加载视图文件
 
-Close the `foo.txt` if you haven't, then open `foo.txt` again. You should see the original text without the changes. That's expected. Let's load the View file. Run:
+关闭并重新打开 `foo.txt`，您会看到原来的文本，没有任何改变。这是预期行为。运行下列命令可以加载视图文件：
 
 ```
 :loadview
 ```
 
-Now you should see:
+现在您将看到：
 
 ```
 +-- 5 lines: foo1 -----
@@ -108,67 +109,67 @@ foo9
 foo10
 ```
 
-The folds, local settings, and local mappings are restored. If you notice, your cursor should also be on the line where you left it when you ran `:mkview`. As long as you have the `cursor` option, View also remembers your cursor position.
+那些折叠、本地设置以及映射都恢复了。如果您细心还可以发现，光标位于上一次您运行 `:mkview` 时所处的行上。只要您有 `cursor` 选项，视图将记住光标位置。
 
-### Multiple Views
+### 多个视图
 
-Vim lets you save 9 numbered Views (1-9).
+Vim 允许您保存 9 个编号的视图（1-9）。
 
-Suppose you want to make an additional fold (say you want to fold the last two lines) with `:9,10 fold`. Let's save this as View 1. Run:
+假设您想用 `:9,10 fold` 来额外折叠最后两行，我们把这存为视图 1。运行：
 
 ```
 :mkview 1
 ```
 
-If you want to make one more fold with `:6,7 fold` and save it as a different View, run:
+如果您又想用 `:6,7 fold` 再折叠一次，并存为不同的视图，运行：
 
 ```
 :mkview 2
 ```
 
-Close the file. When you open `foo.txt` and you want to load View 1, run:
+关闭并重新打开 `foo.txt` 文件，运行下列命令可以加载视图 1：
 
 ```
 :loadview 1
 ```
 
-To load View 2, run:
+要加载视图 2，运行：
 
 ```
 :loadview 2
 ```
 
-To load the original View, run:
+要加载原始视图，运行：
 
 ```
 :loadview
 ```
 
-### Automating View Creation
+### 自动创建视图
 
-One of the worst things that can happen is, after spending countless hours organizing a large file with folds, you accidentally close the window and lose all fold information. To prevent this, you might want to automatically create a View each time you close a buffer. Add this in your vimrc:
+有一件可能会发生的很倒霉的事情是，您花了很长时间在一个大文件中进行折叠，一不小心关闭了窗口，接着丢失了所有折叠信息。您可以在 vimrc 中添加下列内容，使得在关闭缓冲区后 Vim 能自动创建视图，防止此类灾难发生：
 
 ```
 autocmd BufWinLeave *.txt mkview
 ```
 
-Additionally, it might be nice to load View when you open a buffer:
+另外也能在打开缓冲区后自动加载视图：
 
 ```
 autocmd BufWinEnter *.txt silent loadview
 ```
 
-Now you don't have to worry about creating and loading View anymore when you are working with `txt` files. Keep in mind that over time, your `~/.vim/view` might start to accumulate View files. It's good to clean it up once every few months.
+现在，当您编辑 `txt` 文件时，不用再担心创建和加载视图了。但也注意，随着时间的推移，视图文件会不断积累，记得每隔几个月清理一次。
 
-## Sessions
+## 会话
 
-If a View saves the settings of a window, a Session saves the information of all windows (including the layout).
+如果说视图保存了某个窗口的设置，那么会话则保存了所有窗口（包括布局）的信息。
 
-### Creating A New Session
+### 创建新会话
 
-Suppose you are working with these 3 files in a `foobarbaz` project:
+假设您在 `foobarbaz` 工程中编辑着 3 个文件：
 
-Inside `foo.txt`:
+`foo.txt` 的内容：
 
 ```
 foo1
@@ -183,7 +184,7 @@ foo9
 foo10
 ```
 
-Inside `bar.txt`:
+`bar.txt` 的内容：
 
 ```
 bar1
@@ -198,7 +199,7 @@ bar9
 bar10
 ```
 
-Inside `baz.txt`:
+`baz.txt` 的内容：
 
 ```
 baz1
@@ -213,136 +214,138 @@ baz9
 baz10
 ```
 
-Let's say that your windows layout look like the following (using strategically placed `split` and `vsplit`):
+假设您的窗口布局如下所示（适当地使用 `split` 和 `vsplit` 来放置）：
 
 ![Session Layout](images/session-layout.png)
 
-To preserve this look, you need to save the Session. Run:
+要保留这个外观，您需要保存会话。运行：
 
 ```
 :mksession
 ```
 
-Unlike `mkview` where it saves to `~/.vim/view` by default, `mksession` saves a Session file (`Session.vim`) in the current directory. Check out the file if you're curious what's inside.
+与默认存储在 `~/.vim/view` 的 `mkview` 不同，`mksession` 在当前目录存储会话文件（`Session.vim`）。如果好奇，您可以看看文件。
 
-If you want to save the Session file somewhere else, you can pass an argument to `mksession`:
+如果您想将会话文件另存他处，可以将参数传递给 `mksession`：
 
 ```
 :mksession ~/some/where/else.vim
 ```
 
-If you want to overwrite the existing Session file, call the command with a `!` (`:mksession! ~/some/where/else.vim`).
+使用 `!` 来调用命令可以覆盖一个已存在的会话文件（`:mksession! ~/some/where/else.vim`）。
 
-### Loading A Session
+### 加载会话
 
-To load a Session, run:
+运行下列命令可以加载会话：
 
 ```
 :source Session.vim
 ```
 
-Now Vim looks like just the way you left it! Alternatively, you can also load a Session file from the terminal:
+现在 Vim 看起来就像您离开它时的样子！或者，您也可以从终端加载会话文件：
 
 ```
 vim -S Session.vim
 ```
 
-### Configuring Session Attributes
+### 配置会话属性
 
-You can configure the attributes Session saves. To see what is currently being saved, run:
+您可以配置会话要保存的属性。若要查看当前哪些属性正被保存，请运行：
 
 ```
 :set sessionoptions?
 ```
 
-Mine says:
+我的显示：
 
 ```
 blank,buffers,curdir,folds,help,tabpages,winsize,terminal
 ```
 
-If you don't want to save `terminal` when you save a Session, remove it from the session options. Run:
+如果在保存会话时不想存储 `terminal`，可以运行下列命令将其从会话选项中删除：
 
 ```
 :set sessionoptions-=terminal
 ```
 
-If you want to add an `options` when you save a Session, run:
+如果要在保存会话时存储 `options`，请运行：
 
 ```
 :set sessionoptions+=options
 ```
 
-Here are some attributes that `sessionoptions` can store:
-- `blank` stores empty windows
-- `buffers` stores buffers
-- `folds` stores folds
-- `globals` stores global variables (must start with an uppercase letter and contain at least one lowercase letter)
-- `options` stores options and mappings
-- `resize` stores window lines and columns
-- `winpos` stores window position
-- `winsize` stores window sizes
-- `tabpages` stores tabs
-- `unix` stores files in Unix format
+下面是一些 `sessionoptions` 可以存储的属性：
 
-For the complete list check out `:h 'sessionoptions'`.
+- `blank` 存储空窗口
+- `buffers` 存储缓冲区
+- `folds` 存储折叠
+- `globals` 存储全局变量（必须以大写字母开头，并且至少包含一个小写字母）
+- `options` 存储选项和映射
+- `resize` 存储窗口行列
+- `winpos` 存储窗口位置
+- `winsize` 存储窗口大小
+- `tabpages` 存储选项卡
+- `unix` 以 Unix 格式存储文件
 
-Session is a useful tool to preserve your project's external attributes. However, some internal attributes aren't saved by Session, like local marks, registers, histories, etc. To save them, you need to use Viminfo!
+查阅 `:h 'sessionoptions'` 来获取完整列表。
+
+会话是保存项目外部属性的好工具。但是，一些内部属性不存储在会话中，如本地标记、寄存器、历史记录等。要保存它们，您需要使用 Viminfo！
 
 ## Viminfo
 
-If you notice, after yanking a word into register a and quitting Vim, the next time you open Vim you still that text stored in the register. This is actually a work of Viminfo. Without it, Vim won't remember the register after you close Vim.
+如果您留意，在复制一个单词进寄存器 a，再退出并重新打开 Vim 后，您仍然可以看到存储在寄存器中的文本。这就是 Viminfo 的功劳。没有它，在您关闭 Vim 后，Vim 会忘记这些寄存器。
 
-If you use Vim 8 or higher, Vim enables Viminfo by default, so you may have been using Viminfo this whole time without knowing it!
+如果您使用 Vim 8 或更高版本，Vim 会默认启用 Viminfo。因此您可能一直在使用 Viminfo，而您对它毫不知情！
 
-You might ask: "What does Viminfo save? How does it differ from Session?"
+您可能会问：Viminfo 存储了什么？与会话有何不同？
 
-To use Viminfo, first you need to have `+viminfo` feature available (`:version`). Viminfo stores:
-- The command-line history.
-- The search string history.
-- The input-line history.
-- Contents of non-empty registers.
-- Marks for several files.
-- File marks, pointing to locations in files.
-- Last search / substitute pattern (for 'n' and '&').
-- The buffer list.
-- Global variables.
+要使用 Viminfo，您必须启用了 `+viminfo` 特性（`:version`）。Viminfo 存储着：
 
-In general, Session stores the "external" attributes and Viminfo the "internal" attributes.
+- 命令行历史记录。
+- 字符串搜索历史记录。
+- 输入行历史记录。
+- 非空寄存器的内容。
+- 多个文件的标记。
+- 文件标记，它指向文件中的位置。
+- 上次搜索 / 替换模式（用于 “n” 和 “&”）。
+- 缓冲区列表。
+- 全局变量。
 
-Unlike Session where you can have one Session file per project, you normally will use one Viminfo file per computer. Viminfo is project-agnostic.
+通常，会话存储“外部”属性，Viminfo 存储“内部”属性。
 
-The default Viminfo location for Unix is `$HOME/.viminfo` (`~/.viminfo`). If you use a different OS, your Viminfo location might be different. Check out `:h viminfo-file-name`. Each time you make "internal" changes, like yanking a text into a register, Vim automatically updates the Viminfo file.
+每个项目可以有一个会话文件，而 Viminfo 与会话不同，通常每台计算机只使用一个 Viminfo。Viminfo 是项目无关的。
 
-*Make sure that you have `nocompatible` option set (`set nocompatible`), otherwise your Viminfo will not work.*
+对于 Unix，Viminfo 的默认位置是 `$HOME/.viminfo`（`~/.viminfo`）。根据您的操作系统，Viminfo 位置可能会有所不同。可以查阅 `:h viminfo-file-name`。每一次您做出的“内部”更改，如将文本复制进一个寄存器，Vim 都会自动更新 Viminfo 文件。
 
-### Writing And Reading Viminfo
+*请确保您设置了 `nocompatible` 选项（`set nocompatible`），否则您的 Viminfo 将不起作用。*
 
-Although you will use only one Viminfo file, you can create multiple Viminfo files. To write a Viminfo file, use the `:wviminfo` command (`:wv` for short).
+### 读写 Viminfo
+
+尽管只使用一个 Viminfo 文件，但您还是可以创建多个 Viminfo 文件。使用 `:wviminfo` 命令（缩写为 `:wv`）来创建多个 Viminfo 文件。
 
 ```
 :wv ~/.viminfo_extra
 ```
 
-To overwrite an existing Viminfo file, add a bang to the `wv` command:
+要覆盖现有的 Viminfo 文件，向 `wv` 命令多添加一个叹号：
 
 ```
 :wv! ~/.viminfo_extra
 ```
 
-By default Vim will read from `~/.viminfo` file. To read from a different Viminfo file, run `:rviminfo`, or `:rv` for short:
+Vim 默认情况下会读取 `~/.viminfo` 文件。运行 `:rviminfo`（缩写为 `:rv`）可以读取不同的 Vimfile 文件：
 
 ```
 :rv ~/.viminfo_extra
 ```
 
-To start Vim with a different Viminfo file from the terminal, use the `i` flag:
+要在终端使用不同的 Viminfo 文件来启动 Vim，请使用 “i” 标志：
 
 ```
 vim -i viminfo_extra
 ```
 
-If you use Vim for different tasks, like coding and writing, you can create a Viminfo optimized for writing and another for coding.
+如果您要将 Vim 用于不同的任务，比如写代码和写作，您可以创建两个 Viminfo，一个针对写作优化，另一个为写代码优化。
 
 ```
 vim -i viminfo_writing
@@ -350,45 +353,45 @@ vim -i viminfo_writing
 vim -i viminfo_coding
 ```
 
-### Starting Vim Without Viminfo
+### 不使用 Viminfo 启动 Vim
 
-To start Vim without Viminfo, you can run from the terminal:
+要不使用 Viminfo 启动 Vim，可以在终端运行：
 
 ```
 vim -i NONE
 ```
 
-To make it permanent, you can add this in your vimrc file:
+要永不使用 Viminfo，可以在您的 vimrc 文件添加：
 
 ```
 set viminfo="NONE"
 ```
 
-### Configuring Viminfo Attributes
+### 配置 Viminfo 属性
 
-Similar to `viewoptions` and `sessionoptions`, you can instruct what attributes to save with the `viminfo` option. Run:
+和 `viewoptions` 以及 `sessionoptions` 类似，您可以用 `viminfo` 选项指定要存储的属性。请运行：
 
 ```
 :set viminfo?
 ```
 
-You will get:
+您会得到：
 
 ```
 !,'100,<50,s10,h
 ```
 
-This looks cryptic. Let's break it down:
-- `!` saves global variables that start with an uppercase letter and don't contain lowercase letters. Recall that `g:` indicates a global variable. For example, if at some point you wrote the assignment `let g:FOO = "foo"`, Viminfo will save the global variable `FOO`. However if you did `let g:Foo = "foo"`, Viminfo will not save this global variable because it contains lowercase letters. Without `!`, Vim won't safe those global variables.
-- `'100` represents marks. In this case, Viminfo will save the local marks (a-z) of the last 100 files. Be aware that if you tell Viminfo to save too many files, Vim can start slowing down. 1000 is a good number to have.
-- `<50` tells Viminfo how many maximum lines are saved for each registers (50 in this case). If I yank 100 lines of text into register a (`"ay99j`) and close Vim, the next time I open Vim and paste from register a (`"ap`), Vim will only paste 50 lines max. If you don't give maximum line number, *all* lines will be saved. If you give it 0, nothing will be saved.
-- `s10` sets a size limit (in kb) for a register. In this case, any register greater than 10kb size will be excluded.
-- `h` disables highlighting (from `hlsearch`) when Vim starts.
+看起来有点晦涩难懂。命令分解如下：
+- `!` 保存以大写字母开头、却不包含小写字母的全局变量。回想一下 `g:` 代表了一个全局变量。例如，假设您写了赋值语句 `let g:FOO = "foo"`，Viminfo 将存储全局变量 `FOO`。然而如果您写了 `let g:Foo = "foo"`，Viminfo 将不存储它，因为它包含了小写字母。没有 `!`，Vim 不会存储这些全局变量。
+- `'100` 代表标记。在这个例子中，Viminfo 将保存最近 100 个文件的本地标记（a-z）。注意，如果存储的文件过多，Vim 会变得很慢，1000 左右就可以了。
+- `<50` 告诉 Viminfo 每个寄存器最多保存多少行（这个例子中是 50 行）。如果我复制 100 行文本进寄存器 a（`"ay99j`）后关闭 Vim，下次打开 Vim 并从寄存器 a（`"ap`）粘贴时，Vim 最多只粘贴 50 行；如果不指定最大行号，*所有*行都将被保存；如果指定 0，什么都不保存了。
+- `s10` 为寄存器设置大小限制（kb）。在这个例子中，任何大于 10kb 的寄存器都会被排除。
+- `h` 禁用高亮显示（`hlsearch` 时）。
 
-There are other options that you can pass. To learn more, check out `:h 'viminfo'`.
+可以查阅 `:h 'viminfo'` 来了解其他更多选项。
 
-## Using Views, Sessions, And Viminfo The Smart Way
+## 聪明地使用视图、会话和 Viminfo
 
-Vim has View, Session, and Viminfo to take different level of your Vim environment snapshots. For micro projects, use Views. For larger projects, use Sessions. You should take your time to check out all the options that View, Session, and Viminfo offers.
+Vim 能使用视图、会话和 Viminfo 来保存不同级别的 Vim 环境快照。对于微型项目，可以使用视图；对于大型项目，可以使用会话。您应该花些时间来查阅视图、会话和 Viminfo 提供的所有选项。
 
-Create your own View, Session, and Viminfo for your own editing style. If you ever need to use Vim outside of your computer, you can just load your settings and you will immediately feel at home!
+为您的编辑风格创建属于您自己的视图、会话和 Viminfo。如果您要换台计算机使用 Vim，只需加载您的设置，立刻就会感到宾至如归！
