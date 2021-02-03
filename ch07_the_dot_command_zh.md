@@ -64,7 +64,7 @@ fruit-juice
 let one = "1";
 let two = "2";
 let three = "3";
-const foo = "bar';
+const foo = "bar";
 let four = "4";
 let five = "5";
 let six = "6";
