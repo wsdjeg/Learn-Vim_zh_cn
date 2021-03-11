@@ -78,7 +78,7 @@ console.log("Vim is awesome");
 :w !node
 ```
 
-Vim将使用`node`执行Javascript表达式来打印“ Hello Vim”和“ Vim很棒”。
+Vim将使用`node`执行Javascript表达式来打印“ Hello Vim”和“Vim is awesome”。
 
 当使用`：w`命令时，Vim使用当前缓冲区中的所有文本，与global命令类似（大多数命令行命令，如果不给它传递范围，则仅对当前行执行该命令）。如果您通过`：w`来指定地址：
 
