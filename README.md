@@ -8,7 +8,6 @@ _学习 Vim（智能方式）_ 是一本优秀的学习 Vim 知识的书。
 
 ## 目录（进行中）
 
-- Ch 0 - 聪明地学习 Vim
 - Ch 1 - 起步
 - [Ch 2 - 缓冲区，窗口和选项卡](./ch02_buffers_windows_tabs.md)
 - [Ch 3 - 打开和搜索文件](./ch03_opening_and_searching_files.md)
@@ -23,11 +22,12 @@ _学习 Vim（智能方式）_ 是一本优秀的学习 Vim 知识的书。
 - [Ch 12 - 搜索和替换](./ch12_search_and_substitute.md)
 - [Ch 13 - 全局命令](./ch13_the_global_command.md)
 - [Ch 14 - 外部命令](./ch14_external_commands.md)
-- Ch 15 - 命令行模式
-- Ch 16 - 标签
-- Ch 17 - Git
-- Ch 18 - 折叠
-- Ch 19 - 编译
+- [Ch 15 - 命令行模式](./ch15_command-line_mode.md)
+- [Ch 16 - 标签](./ch16_tags.md)
+- [Ch 17 - 折叠](./ch17_fold.md)
+- [Ch 18 - Git](./ch18_git.md)
+- [Ch 19 - 编译](./ch19_compile.md)
+- [Ch 20 - 视图、会话和 Viminfo](./ch20_views_sessions_viminfo.md)
 
 # 许可和版权
 
