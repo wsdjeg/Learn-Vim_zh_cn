@@ -8,9 +8,15 @@ _学习 Vim（智能方式）_ 是一本优秀的学习 Vim 知识的书。
 
 ## 目录（进行中）
 
+### 序言
+
+- [Ch 0 - 请先阅读](./ch00_read_this_first.md)
+
+### 第一部分：聪明地学习Vim
+
 - [Ch 1 - 起步](./ch01_starting_vim.md)
 - [Ch 2 - 缓冲区，窗口和选项卡](./ch02_buffers_windows_tabs.md)
-- [Ch 3 - 打开和搜索文件](./ch03_opening_and_searching_files.md)
+- [Ch 3 - 打开和搜索文件](./ch03_searching_files.md)
 - [Ch 4 - Vim 语法](./ch04_vim_grammar.md)
 - [Ch 5 - 移动文件](./ch05_moving_in_file.md)
 - [Ch 6 - 插入模式](./ch06_insert_mode_zh.md)
