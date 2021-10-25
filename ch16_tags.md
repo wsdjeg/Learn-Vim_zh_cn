@@ -13,7 +13,7 @@ one.donut
 
 `One`？`donut`？呃，对于当时编写代码的开发者而言，这些代码的含义可能显而易见。问题是当时的开发者已经不在了，现在要由您来理解这些费解的代码。而跟随有`One` 和 `donut`定义的源代码，是帮助您理解的一个有效方法。
 
-您可以使用`fzf` 或 `grep`来搜索它们，但使用标签将更快。
+您可以使用`fzf` 或 `grep`来搜索它们，但这种情况下，但使用标签将更快。
 
 把标签想象成地址簿：
 
@@ -69,17 +69,9 @@ one.donut
 
 如果您查看 Vim 在线教程，您会发现许多都会推荐 [exuberant ctags](http://ctags.sourceforge.net/)，它支持 [41 种编程语言](http://ctags.sourceforge.net/languages.html)，我用过它，挺不错的。但自2009年以来一直没有维护，因此 Universal ctags 更好些，它和 exuberant ctags 相似，并仍在维护。
 
-我不打算详细介绍如何安装 Universal ctags，您可以在 [universal ctags](https://github.com/universal-ctags/ctags) 仓库了解更多说明。在您安装 universal ctags 后，运行 `ctags --version`，它会显示：
+我不打算详细介绍如何安装 Universal ctags，您可以在 [universal ctags](https://github.com/universal-ctags/ctags) 仓库了解更多说明。
 
-```
-Universal Ctags 0.0.0(b43eb39), Copyright (C) 2015 Universal Ctags Team
-Universal Ctags is derived from Exuberant Ctags.
-Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert
-```
-
-请确保您看到了 "`Universal Ctags`"。
-
-接下来，生成一个基本的标签文件。运行：
+假设您已经安装好了ctags，接下来，生成一个基本的标签文件。运行：
 
 ```
 ctags -R .
@@ -102,7 +94,7 @@ donut	one.rb	/^  def donut$/;"	f	class:One
 initialize	one.rb	/^  def initialize$/;"	f	class:One
 ```
 
-根据 Vim 设置和 ctag 生成器的不同，您的`tags` 文件可能会有些不同。一个标签文件由两部分组成：标签元数据和标签列表。那些标签元数据 (`!TAG_FILE...`) 通常由 ctags 生成器控制。这里我不打算介绍它们，您可以随意查阅文档。
+根据 Vim 设置和 ctag 生成器的不同，您的`tags` 文件可能会有些不同。一个标签文件由两部分组成：标签元数据和标签列表。那些标签元数据 (`!TAG_FILE...`) 通常由 ctags 生成器控制。这里我不打算介绍它们，您可以随意查阅文档。标签列表是一个由所有定义组成的列表，由ctags建立索引。
 
 现在回到 `two.rb`，将光标移至 `donut`，再输入`Ctrl-]`，Vim 将带您转到 `one.rb` 文件里`def donut` 所在的行上。成功啦！但 Vim 怎么做到的呢？
 
@@ -127,7 +119,7 @@ donut	one.rb	/^  def donut$/;"	f	class:One
 One	one.rb	/^class One$/;"	c
 ```
 
-这一行也是一样的：
+这一行和 `donut`也是一样的：
 
 - `One` 是 `tagname`。注意，对于标签，第一次扫描区分大小写。如果列表中有 `One` 和 `one`， Vim 会优先考虑 `One` 而不是 `one`。
 - `one.rb` 是 `tagfile`。Vim 会搜寻 `one.rb` 文件。
@@ -350,16 +342,6 @@ Vim 有一个自动命令 (`autocmd`) 方法，可以在触发事件时执行任
 
 现在，每次您保存一个 ruby 文件时，Vim 都会运行`ctags -R .`。
 
-在 `two.rb` 中添加一个新过程：
-
-```
-def waffle
-  "Two waffles"
-end
-```
-
-现在保存文件，接着检查一下标签文件，您会在里面看到 `waffle` 了。成功啦！
-
 ## 使用插件
 
 有几种插件可以自动生成 ctags：
@@ -369,7 +351,7 @@ end
 - [vim-easytags](https://github.com/xolox/vim-easytags)
 - [vim-autotag](https://github.com/craigemery/vim-autotag)
 
-我使用 vim-gutentags。如果您使用了 Vim 插件管理器 ([vim-plug](https://github.com/junegunn/vim-plug), [vundle](https://github.com/VundleVim/Vundle.vim), [dein.vim](https://github.com/Shougo/dein.vim), 等)，只需要直接安装就能工作。
+我使用 vim-gutentags。它的使用方法很简单，而且装上就可以直接使用。
 
 ## Ctags 以及 Git 钩子
 
@@ -377,9 +359,7 @@ Tim Pope 是一个写了很多非常棒的 Vim 插件的作者，他写了一篇
 
 ## 聪明地学习标签
 
-只要配置得当，标签是非常有用的。如果您像我一样很容易地忘记事情，标签可以帮助您可视化一个项目。
-
-假设在一个新的代码库中，您想要搞清楚 `functionFood` 干了什么，您可以通过跳转到它的定义来搞懂它们。在那儿可以看到，它又调用了 `functionBreakfast`。继续跟踪，发现还调用了 `functionPancake`。现在您明白了，函数调用路径图长这样：
+只要配置得当，标签是非常有用的。假设在一个新的代码库中，您想要搞清楚 `functionFood` 干了什么，您可以通过跳转到它的定义来搞懂它们。在那儿可以看到，它又调用了 `functionBreakfast`。继续跟踪，发现还调用了 `functionPancake`。现在您明白了，函数调用路径图长这样：
 
 ```
 functionFood -> functionBreakfast -> functionPancake

@@ -1,2 +1,0 @@
-ch13_the_global_command.md line538:
-`:g/\[/`应该改为`:g`

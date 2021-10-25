@@ -1,6 +1,8 @@
 # Learn-Vim(the Smart Way) 中文翻译
 
-[英文版本](https://github.com/iggredible/Learn-Vim)
+[英文版本仓库地址](https://github.com/iggredible/Learn-Vim)
+
+本中文版基于2021-10-15英文版进行翻译和更新，基础英文版本保存在 `./The_original_En_version` 下，如果后续英文版有更新，可以将最新版本与该版本比对后，再进行差分翻译。
 
 ## 这是什么?
 
@@ -23,11 +25,11 @@ _学习 Vim（智能方式）_ 是一本学习Vim中优秀部分知识的书。
 - [Ch 3 - 打开和搜索文件](./ch03_searching_files.md)
 - [Ch 4 - Vim 语法](./ch04_vim_grammar.md)
 - [Ch 5 - 移动文件](./ch05_moving_in_file.md)
-- [Ch 6 - 插入模式](./ch06_insert_mode_zh.md)
-- [Ch 7 - 点命令](./ch07_the_dot_command_zh.md)
-- [Ch 8 - 寄存器](./ch08_registers_zh.md)
-- [Ch 9 - 宏](./ch09_macros_zh.md)
-- [Ch 10 - 撤消](./ch10_undo_zh.md)
+- [Ch 6 - 插入模式](./ch06_insert_mode.md)
+- [Ch 7 - 点命令](./ch07_the_dot_command.md)
+- [Ch 8 - 寄存器](./ch08_registers.md)
+- [Ch 9 - 宏](./ch09_macros.md)
+- [Ch 10 - 撤消](./ch10_undo.md)
 - [Ch 11 - 可视模式](./ch11_visual_mode.md)
 - [Ch 12 - 搜索和替换](./ch12_search_and_substitute.md)
 - [Ch 13 - 全局命令](./ch13_the_global_command.md)
