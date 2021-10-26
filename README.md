@@ -40,6 +40,13 @@ _学习 Vim（智能方式）_ 是一本学习Vim中优秀部分知识的书。
 - [Ch 18 - Git](./ch18_git.md)
 - [Ch 19 - 编译](./ch19_compile.md)
 - [Ch 20 - 视图、会话和 Viminfo](./ch20_views_sessions_viminfo.md)
+- [Ch 21 - 多文件操作](./ch21_multiple_file_operations.md)
+
+### 第二部分：聪明地定制Vim
+
+- [Ch 22 - Vimrc](./ch22_vimrc.md)
+- [Ch 23 - Vim软件包](./ch23_vim_packages.md)
+- [Ch 24 - Vim Runtime](./ch24_vim_runtime.md)
 
 # 许可和版权
 
