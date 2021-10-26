@@ -12,63 +12,11 @@
 
 但要每次手动指定文件名和输出文件名会非常繁琐和容易出错。而 makefile 是条可行之路。
 
-## Makefile
-
-在本节中，我将简要介绍一些 makefile 的基础知识。如果您已经知道如何使用 makefile，可以直接跳转到下一部分。在当前目录中，创建一个 `makefile` 文件，内容是：
-
-```
-all:
-	echo "Hello all"
-```
-
-在终端中运行 `make` 命令：
-
-```
-make
-```
-
-您将看到：
-
-```
-echo "Hello all"
-Hello all
-```
-
-终端输出了 echo 命令本身及其输出。您可以在 makefile 中编写多个“目标”。现在我们多添加几个：
-
-```
-all:
-	echo "Hello all"
-foo:
-	echo "Hello foo"
-list_pls:
-	ls
-```
-
-接着您可以用不同目标运行 `make`  命令：
-
-```
-make foo
-## returns "Hello foo"
-
-make list_pls
-## returns the ls command
-```
-
-除了输出之外，`make` 还输出了实际命令。要停止输出实际命令，可以在命令开头添加 `@`：
-
-```
-all:
-  @echo "Hello all"
-```
-
-现在运行 `make`，您将仅看到 "Hello all" 而没有 `echo "Hello all"` 了。
-
-## `:make`
+## Make命令
 
 Vim 有运行 makefile 的 `:make` 命令。当您运行它时，Vim 会在当前目录查找 makefile 并执行它。
 
-您可以在当前目录创建 `makefile` 文件并添加如下内容来跟随教程：
+在当前目录创建一个文件名为 `makefile` ，然后添加下列内容：
 
 ```
 all:
@@ -89,8 +37,10 @@ Vim 执行它的方式与从终端运行它的方式相同。`:make` 命令也�
 
 ```
 :make foo
+" Outputs "Hello foo"
 
 :make list_pls
+" Outputs the ls command result
 ```
 
 如果命令执行异常，`:make` 命令将使用 Vim 的 `quickfix` 来存储这些错误。现在试着运行一个不存在的目标：
@@ -105,7 +55,7 @@ Vim 执行它的方式与从终端运行它的方式相同。`:make` 命令也�
 || make: *** No rule to make target `dontexist'.  Stop.
 ```
 
-## 使用 `make` 编译
+## 使用 Make 编译
 
 让我们使用 makefile 来编译一个基本的 `.cpp` 程序。首先创建一个 `hello.cpp` 文件：
 
@@ -135,7 +85,7 @@ run:
 :make build
 ```
 
-`g++` 将编译 `./hello.cpp` 并且输出 `./hello`。接着运行：
+`g++` 将编译 `./hello.cpp` 并且生成 `./hello`。接着运行：
 
 ```
 :make run
@@ -143,7 +93,7 @@ run:
 
 您应该会看到终端上打印出了 `"Hello!"`。
 
-## `makeprg`
+## 不同的Make程序
 
 当您运行 `:make` 时，Vim 实际上会执行 `makeprg` 选项所设置的任何命令，您可以运行 `:set makeprg?` 来查看它：
 
@@ -151,33 +101,32 @@ run:
 makeprg=make
 ```
 
-`:make` 的默认命令是外部的 `make` 命令。若要将 `:make` 命令更改为：每次运行它则执行 `g++ <your-file-name>`，请运行：
+`:make` 的默认命令是外部的 `make` 命令。若想修改 `:make` 命令，使每次运行它时执行 `g++ <your-file-name>`，请运行：
 
 ```
-:set makeprg=g++\\ %
+:set makeprg=g++\ %
 ```
 
-`\\` 用于转义 `g++` 后的空格（转义本身也需要转义）。Vim 中 `%` 符号代表当前文件。因此，`g++\\ %` 命令等于运行 `g++ hello.cpp`。
+`\` 用于转义 `g++` 后的空格。Vim 中 `%` 符号代表当前文件。因此，`g++\ %` 命令等于运行 `g++ hello.cpp`。
 
-转到 `./hello.cpp` 然后运行 `:make`，Vim 将编译 `hello.cpp` 并输出 `a.out`（因为您没有指定输出）。让我们重构一下，使用去掉扩展名的原始文件名来命名编译后的输出。运行：
+转到 `./hello.cpp` 然后运行 `:make`，Vim 将编译 `hello.cpp` 并输出 `a.out`（因为您没有指定输出）。让我们重构一下，使用去掉扩展名的原始文件名来命名编译后的输出。运行下面的命令（或将它们添加到vimrc）：
 
 ```
-:set makeprg=g++\\ %\\ -o\\ %<
+:set makeprg=g++\ %\ -o\ %<
 ```
 
 上面的命令分解如下：
-
 - `g++\\ %` 如上所述，等同于运行 `g++ <your-file>`。
 - `-o` 输出选项。
 - `%<` 在 Vim 中代表了没有扩展名的当前文件名（如 `hello.cpp` 变成 `hello`）。
 
-当您在 `./hello.cpp` 中运行 `:make` 时，它将编译为 `./hello`。要在 `./hello.cpp` 中快速地执行 `./hello`，可以运行 `:!./%<`。同样，它等同于运行 `:!./<current-file-name-minus-the-extension>`。
+当您在 `./hello.cpp` 中运行 `:make` 时，它将编译为 `./hello`。要在 `./hello.cpp` 中快速地执行 `./hello`，可以运行 `:!./%<`。同样，它等同于运行 `:!./<无后缀的当前文件名>`。
 
 查阅 `:h :compiler` 和 `:h write-compiler-plugin` 可以了解更多信息。
 
 ## 保存时自动编译
 
-有了自动化编译，您可以让生活更加轻松。回想一下，您可以使用 Vim 的 `autocommand` 来根据某些事件自动执行操作。例如，要自动在每次保存后编译 `.cpp` 文件，您可以运行：
+有了自动化编译，您可以让生活更加轻松。回想一下，您可以使用 Vim 的 `autocmd` 来根据某些事件自动执行操作。例如，要自动在每次保存后编译 `.cpp` 文件，您可以将下面内容添加到vimrc：
 
 ```
 :autocmd BufWritePost *.cpp make
@@ -207,7 +156,7 @@ puts "Hello ruby"
 :compiler ruby
 ```
 
-Vim 执行 `$VIMRUNTIME/compiler/ruby.vim` 脚本，并将 `makeprg` 更改为使用 `ruby` 命令。现在如果您运行 `:set makeprg?`，它会显示 `makeprg=ruby`（这取决于您 `$VIMRUNTIME/compiler/ruby.vim` 里的内容，或者是否有其他自定义的 ruby 编译器，因此您的结果可能会有不同）。`:compiler <your-lang>` 命令允许您快速切换至其他编译器。如果您的项目使用多种语言，这会非常有用。
+Vim 执行 `$VIMRUNTIME/compiler/ruby.vim` 脚本，并将 `makeprg` 更改为使用 `ruby` 命令。现在如果您运行 `:set makeprg?`，它会显示 `makeprg=ruby`（这取决于您 `$VIMRUNTIME/compiler/ruby.vim` 里的内容，如果您有其他自定义的 ruby 编译器，您的结果可能会有不同）。`:compiler <your-lang>` 命令允许您快速切换至其他编译器。如果您的项目使用多种语言，这会非常有用。
 
 您不必使用 `:compiler` 或 `makeprg` 来编译程序。您可以运行测试脚本、分析文件、发送信号或任何您想要的内容。
 
@@ -220,7 +169,7 @@ const hello = "hello";
 console.log(hello);
 ```
 
-运行 `tsc hello.ts` 后，它将被编译成 `hello.js`。然而，如果 `hello.ts` 变成：
+运行 `tsc hello.ts` 后，它将被编译成 `hello.js`。然而，如果您的 `hello.ts` 文件中有如下内容：
 
 ```
 const hello = "hello";
@@ -247,7 +196,7 @@ CompilerSet makeprg=tsc
 CompilerSet errorformat=%f:\ %m
 ```
 
-第一行设置 `makeprg` 为运行 `tsc` 命令。第二行将错误格式设置为显示文件（`%f`），后跟冒号（`:`）和转义的空格（`\ `），最后是错误消息（`%m`）。查阅 `:h errorformat` 可了解更多关于错误格式的信息。
+第一行将 `makeprg` 设置为运行 `tsc` 命令。第二行将错误格式设置为显示文件（`%f`），后跟冒号（`:`）和转义的空格（`\ `），最后是错误消息（`%m`）。查阅 `:h errorformat` 可了解更多关于错误格式的信息。
 
 您还可以阅读一些预制的编译器，看看它们是如何实现的。输入 `:e $VIMRUNTIME/compiler/<some-language>.vim` 查看。
 
@@ -294,7 +243,7 @@ vim --noplugin hello.ts
 
 Vim-dispatch 有几个命令，最主要的两个是 `:Make` 和 `:Dispatch`。
 
-## `:Make`
+### 异步Make
 
 Vim-dispatch 的 `:Make` 命令与 Vim 的 `:make` 相似，但它以异步方式运行。如果您正处于 Javascript 项目中，并且需要运行 `npm t`，可以将 `makeprg` 设置为：
 
@@ -316,9 +265,9 @@ Vim 将执行 `npm t`。但同时，您只能盯着冻结了的屏幕。有了 v
 
 Vim 将启用后台进程异步运行 `npm t`，同时您还能在 Vim 中继续编辑您的文本。棒极了！
 
-## `:Dispatch`
+### 异步调度（Dispatch）
 
-`:Dispatch` 命令的工作方式和 `:compiler` 及 `:!` 类似。
+`:Dispatch` 命令的工作方式和 `:compiler` 及 `:!` 类似，它可以在Vim中运行任意外部命令。
 
 假设您在 ruby spec 文件中，需要执行测试，可以运行：
 
@@ -328,17 +277,16 @@ Vim 将启用后台进程异步运行 `npm t`，同时您还能在 Vim 中继续
 
 Vim 将对当前文件异步运行 `rspec` 命令。
 
-## 自动调度
+### 自动调度
 
-Vim-dispatch 有 `b:dispatch` 缓冲区变量，您可以配置它来执行特定命令，并利用上 `autocmd`。如果在您的 vimrc 中添加如下内容：
+Vim-dispatch 有一个缓冲区变量`b:dispatch`，您可以配置它来自动执行特定命令，您可以利用 `autocmd`和它一起工作。如果在您的 vimrc 中添加如下内容：
 
 ```
 autocmd BufEnter *_spec.rb let b:dispatch = 'bundle exec rspec %'
 ```
 
-现在每当您进入一个以 `_spec.rb` 结尾的文件（`BufEnter`），`:Dispatch` 将被自动运行以执行 `bundle exec rspec <your-current-ruby-spec-file>`。
+现在每当您进入（`BufEnter`）一个以 `_spec.rb` 结尾的文件，运行`:Dispatch` 将自动执行 `bundle exec rspec <your-current-ruby-spec-file>`。
 
 ## 聪明地学习编译
 
-在本章中，您了解到可以使用 `make` 和 `compiler` 命令从Vim内部异步运行*任何*进程，以完善您的编程工作流。Vim 拥有通过其他程序来扩展自身的能力，这使其变得强大。
-
+在本章中，您了解到可以使用 `make` 和 `compiler` 命令从Vim内部异步运行 *任何* 进程，以完善您的编程工作流程。Vim 拥有通过其他程序来扩展自身的能力，这使其变得强大。
