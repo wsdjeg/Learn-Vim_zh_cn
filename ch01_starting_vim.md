@@ -147,7 +147,7 @@ vim -o5 hello1.txt hello2.txt
 若想将Vim打开为2个垂直分割的窗口、5个垂直分割的窗口、5个垂直分割窗口并显示2个文件，在终端中分别运行以下命令：
 
 ```bash
-vim -O
+vim -O2
 vim -O5
 vim -O5 hello1.txt hello2.txt
 ```
