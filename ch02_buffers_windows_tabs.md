@@ -41,7 +41,7 @@ Vim当前显示的是`file1.js`的buffer，但它实际上创建了两个buffers
 - 按下`Ctrl-O`将跳转至跳转列表中旧的位置，对应的，按下`Ctrl-I`将跳转至跳转列表中新的位置。这并不是属于buffer的特有方法，但它可以用来在不同的buffers中跳转。我将在第5章详细讲述关于跳转的知识。
 - 按下`Ctrl-^`跳转至先前编辑过的buffer。
 
-一旦Vim创建了一个buffer，它将保留在您的buffers列表中。若想删除它，您可以输入`:bdelete`。这条命令也可以接收一个buffer编号（`:bdlete 3`将删除buffer #3）或一个文件名（`:bdelete`然后按`<Tab>`自动补全文件名）。
+一旦Vim创建了一个buffer，它将保留在您的buffers列表中。若想删除它，您可以输入`:bdelete`。这条命令也可以接收一个buffer编号（`:bdelete 3`将删除buffer #3）或一个文件名（`:bdelete`然后按`<Tab>`自动补全文件名）。
 
 我学习buffer时最困难的事情就是理解buffer如何工作，因为我当时的思维已经习惯了使用主流文本编辑器时关于窗口的概念。要理解buffer，可以打个很好的比方，就是打牌的桌面。如果您有2个buffers，就像您有一叠牌（2张）。您只能看见顶部的牌，虽然您知道在它下面还有其他的牌。如果您看见`file1.js`buffer，那么`file1.js`就是顶部的牌。虽然您看不到其他的牌`file2.js`，但它实际上就在那。如果您切换buffers到`file2.js`，那么`file2.js`这张牌就换到了顶部，而`file1.js`就换到了底部。
 
