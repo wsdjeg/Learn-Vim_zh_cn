@@ -1,4 +1,5 @@
-- [序言](./ch00_read_this_first.md)
+- 序言
+  - [Ch 0 - 请先阅读](./ch00_read_this_first.md)
 - 第一部分：聪明地学习Vim
   - [Ch 1 - 起步](./ch01_starting_vim.md)
   - [Ch 2 - 缓冲区，窗口和选项卡](./ch02_buffers_windows_tabs.md)
