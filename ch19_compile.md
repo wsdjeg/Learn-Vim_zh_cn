@@ -290,3 +290,9 @@ autocmd BufEnter *_spec.rb let b:dispatch = 'bundle exec rspec %'
 ## 聪明地学习编译
 
 在本章中，您了解到可以使用 `make` 和 `compiler` 命令从Vim内部异步运行 *任何* 进程，以完善您的编程工作流程。Vim 拥有通过其他程序来扩展自身的能力，这使其变得强大。
+
+## 链接
+
+- [目录](./directory.md)
+- 上一节: [Ch 18 - Git](./ch18_git.md)
+- 下一节: [Ch 20 - 视图、会话和 Viminfo](./ch20_views_sessions_viminfo.md)

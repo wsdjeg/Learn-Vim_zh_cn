@@ -131,3 +131,8 @@ endif
 
 如果您是极简主义者，可以尝试一下Vim软件包。如果您是一名插件重度使用者，您可能需要一个插件管理器。
 
+## 链接
+
+- [目录](./directory.md)
+- 上一节: [Ch 22 - Vimrc](./ch22_vimrc.md)
+- 下一节: [Ch 24 - Vim Runtime](./ch24_vim_runtime.md)
