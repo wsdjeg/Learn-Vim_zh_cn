@@ -190,3 +190,8 @@ vim -p file1.js file2.js file3.js
 - 我使用[tmux](https://github.com/tmux/tmux/wiki)windows来代替tabs。通常一次使用多个tmux窗口。比如，一个tmux窗口用来写客户端代码，一个用来写后台代码。 
 
 由于编辑风格不同，我的工作流程可能和您的工作流程不同，这没关系。您可以在实践中去探索适合您自己工作流程的编码风格。
+
+## 链接
+- [目录](./directory.md)
+- 上一部分 [Ch 1 - 起步](./ch01_starting_vim.md)
+- 下一部分 [Ch 3 - 打开和搜索文件](./ch03_searching_files.md)

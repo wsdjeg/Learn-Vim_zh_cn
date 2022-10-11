@@ -282,3 +282,7 @@ set rtp+=$HOME/box/of/donuts/
 ## 聪明地学习Runtime
 
 花点时间阅读本章，还有认真研究一下这些runtime路径。看一下真实环境下runtime路径是如何使用的。浏览一下您最喜欢的Vim插件仓库，仔细研究一下它的目录结构，您应该能够理解它们中的绝大部分。试着领会重点并跟着做。现在您已经理解了Vim的目录结构，您可以准备学习Vimscript了。
+
+## 链接
+- [目录](./directory.md)
+- 上一部分 [Ch 23 - Vim软件包](./ch23_vim_packages.md)

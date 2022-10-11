@@ -395,3 +395,8 @@ set viminfo="NONE"
 Vim 能使用视图、会话和 Viminfo 来保存不同级别的 Vim 环境快照。对于微型项目，可以使用视图；对于大型项目，可以使用会话。您应该花些时间来查阅视图、会话和 Viminfo 提供的所有选项。
 
 为您的编辑风格创建属于您自己的视图、会话和 Viminfo。如果您要换台计算机使用 Vim，只需加载您的设置，立刻就会感到就像在家里的工作环境一样！
+
+## 链接
+- [目录](./directory.md)
+- 上一部分 [Ch 19 - 编译](./ch19_compile.md)
+- 下一部分 [Ch 21 - 多文件操作](./ch21_multiple_file_operations.md)
