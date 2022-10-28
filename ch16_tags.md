@@ -368,3 +368,8 @@ functionFood -> functionBreakfast -> functionPancake
 进一步可以知道，这段代码和早餐吃煎饼有关。
 
 现在您已经知道如何使用标签，通过 `:h tags` 可以学习更多有关标签的知识。接下来让我们一起来探索另一个功能：折叠。
+
+## 链接
+- [目录](./directory.md)
+- 上一部分 [Ch 15 - 命令行模式](./ch15_command-line_mode.md)
+- 下一部分 [Ch 17 - 折叠](./ch17_fold.md)

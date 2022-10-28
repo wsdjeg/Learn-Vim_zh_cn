@@ -398,3 +398,8 @@ vim -u ~/.vimrc-backup
 ## 聪明地配置Vimrc
 
 Vimrc是定制Vim时的一个重要组件，学习构建您的Vimrc最好是首先阅读他人的vimrc文件，然后逐渐地建立自己的。最好的vimrc并不是谁谁谁使用的，而是最适合您的工作需要和编辑风格的。
+
+## 链接
+- [目录](./directory.md)
+- 上一部分 [Ch 21 - 多文件操作](./ch21_multiple_file_operations.md)
+- 下一部分 [Ch 23 - Vim软件包](./ch23_vim_packages.md)
