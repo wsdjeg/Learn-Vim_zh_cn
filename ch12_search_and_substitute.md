@@ -523,7 +523,7 @@ bonjour vim
 您仅需在包含单词"hello"或"hola"的行上用"friend"代替"vim"。回想一想本章前面的知识点，你可以使用`|` 来分隔可选的模式:
 
 ```
-:%s/\v(hello|hola) vim)/\1 friend/g
+:%s/\v(hello|hola) vim/\1 friend/g
 ```
 
 结果:
